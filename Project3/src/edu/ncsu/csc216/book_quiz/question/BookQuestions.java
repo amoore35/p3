@@ -14,7 +14,7 @@ import edu.ncsu.csc216.question_library.StandardQuestion;
 /**
  * Implements a Finite State Machine for question sequencing, additions, and transitions.
  * [SEE UC4 AND UC7]
- * @author AlexiaMoore
+ * @author Alexia Moore!
  *
  */
 public class BookQuestions {
