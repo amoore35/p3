@@ -21,13 +21,13 @@ import edu.ncsu.csc216.question_library.StandardQuestion;
  */
 public class BookQuiz implements QuizMaster {
 	
-	/** */
+	/** A QuestionWriter to write questions to a file */
 	private QuestionWriter writer;
 	
-	/** */
+	/** A QuestionReader to read questions from to create the BookQuiz */
 	private QuestionReader reader;
 	
-	/** */
+	/** Keeps track of the questions in the BookQuiz */
 	private BookQuestions questions;
 	
 	/**
@@ -53,41 +53,47 @@ public class BookQuiz implements QuizMaster {
 	}
 
 	/**
-	 * @return
+	 * Are there any more questions remaining in this quiz?
+	 * @return true if there are, false if there are not
 	 */
 	public boolean hasMoreQuestions() {
-		return false;
+		return questions.hasMoreQuestions();
 	}
 
 	/**
-	 * @return
-	 * @throws
+	 * Get the text for the current question.
+	 * @return the current question text
+	 * @throws EmptyQuestionListException if there is no current question
 	 */
 	public String getCurrentQuestionText() throws EmptyQuestionListException {
 		return null;
 	}
 
 	/**
-	 * @return
+	 * Get the possible answers for the current question
+	 * @return the possible answers for the current question -- each answer
+	 *         is a separate array element
+	 * @throws EmptyQuestionListException if there is no current question
 	 */
-	public String[] getCurrentQuestionChoices()
-			throws EmptyQuestionListException {
+	public String[] getCurrentQuestionChoices() throws EmptyQuestionListException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/**
-	 * @param
-	 * @return
+	 * Process the user's answer to the current question.
+	 * @param answer  the user's answer to the question
+	 * @return the graded response to the question
+	 * @throws EmptyQuestionListException if there is no current question
 	 */
-	public String processAnswer(String answer)
-			throws EmptyQuestionListException {
+	public String processAnswer(String answer) throws EmptyQuestionListException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/**
-	 * @return
+	 * How many questions has the user answered correctly?
+	 * @return the number of correct answers
 	 */
 	public int getNumCorrectQuestions() {
 		// TODO Auto-generated method stub
@@ -95,7 +101,8 @@ public class BookQuiz implements QuizMaster {
 	}
 
 	/**
-	 * @return
+	 * How many questions has the user attempted to answer.
+	 * @return the number of attempts
 	 */
 	public int getNumAttemptedQuestions() {
 		// TODO Auto-generated method stub
@@ -103,21 +110,25 @@ public class BookQuiz implements QuizMaster {
 	}
 
 	/**
-	 * @param
-	 * @param
-	 * @param
+	 * Adds a StandardQuestion to the QuestionLibrary.
+	 * @param questionText text of question
+	 * @param questionChoices array of possible answers
+	 * @param correctAnswer correct answer
+	 * @throws IllegalArgumentException if any parameters contain null or empty strings
 	 */
 	public void addStandardQuestion(String questionText,
 			String[] questionChoices, String correctAnswer) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	/**
-	 * @param
-	 * @param
-	 * @param
-	 * @param
+	 * Adds an ElementaryQuestion to the QuestionLibrary.
+	 * @param questionText text of question
+	 * @param questionChoices array of possible answers
+	 * @param correctAnswer correct answer
+	 * @param hint a hint for the question
+	 * @throws IllegalArgumentException if any parameters contain null or empty strings
 	 */
 	public void addElementaryQuestion(String questionText,
 			String[] questionChoices, String correctAnswer, String hint) {
@@ -126,10 +137,12 @@ public class BookQuiz implements QuizMaster {
 	}
 
 	/**
-	 * @param
-	 * @param
-	 * @param
-	 * @param
+	 * Adds an AdvancedQuestion to the QuestionLibrary.
+	 * @param questionText text of question
+	 * @param questionChoices array of possible answers
+	 * @param correctAnswer correct answer
+	 * @param comment a message for answering the question right
+	 * @throws IllegalArgumentException if any parameters contain null or empty strings
 	 */
 	public void addAdvancedQuestion(String questionText,
 			String[] questionChoices, String correctAnswer, String comment) {
@@ -138,11 +151,13 @@ public class BookQuiz implements QuizMaster {
 	}
 
 	/**
-	 * @param
-	 * @throws
+	 * Writes the Questions to the given file
+	 * @param questionFile file name to write questions to
+	 * @throws QuestionException if the questions cannot be written to the 
+	 * given file
 	 */
 	public void writeQuestions(String questionFile) throws QuestionException {
-		// TODO Auto-generated method stub
+		this.writer = new QuestionWriter(questionFile);
 		
 	}
 	

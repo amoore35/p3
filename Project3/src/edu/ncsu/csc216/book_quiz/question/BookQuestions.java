@@ -3,6 +3,7 @@
  */
 package edu.ncsu.csc216.book_quiz.question;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncsu.csc216.question_library.AdvancedQuestion;
@@ -18,31 +19,31 @@ import edu.ncsu.csc216.question_library.StandardQuestion;
  */
 public class BookQuestions {
 	
-	/** */
+	/** Keeps track of the number of questions answered correctly */
 	private int numCorrectAnswers;
 	
-	/** */
+	/** Keeps track of the number of questions attempted */
 	private int numAttemptQuests;
 	
-	/** */
-	public static final String CORRECT = "";
+	/** A String constant to represent what is displayed when an answer is correct */
+	public static final String CORRECT = "Correct!";
 	
-	/** */
-	public static final String INCORRECT = "";
+	/** A String constant to represent what is displayed when an answer is incorrect */
+	public static final String INCORRECT = "Incorrect!";
 	
 	/** */
 	public static final String SEPARATOR = "";
 	
-	/** */
+	/** Represents the elementary question state */
 	private QuestionState elemState;
 	
-	/** */
+	/** Represents the standard question state */
 	private QuestionState stdState;
 	
-	/** */
+	/** Represents the advanced question state */
 	private QuestionState advState;
 	
-	/** */
+	/** Keeps track of the current state */
 	private QuestionState state;
 	
 	/**
@@ -56,8 +57,8 @@ public class BookQuestions {
 		 * 
 		 * @param questions
 		 */
-		public AdvancedQuestionState(List<AdvancedQuestion> questions){
-			
+		public AdvancedQuestionState(List<AdvancedQuestion> advQuestions){
+			super(new ArrayList<Question>(advQuestions));
 		}
 		
 		/**
@@ -89,8 +90,8 @@ public class BookQuestions {
 		 * 
 		 * @param questions
 		 */
-		public ElementaryQuestionState(List<ElementaryQuestion> questions){
-			
+		public ElementaryQuestionState(List<ElementaryQuestion> elemQuestions){
+			super(new ArrayList<Question>(elemQuestions));
 		}
 		
 		/**
@@ -118,8 +119,8 @@ public class BookQuestions {
 		 * 
 		 * @param questions
 		 */
-		public StandardQuestionState(List<StandardQuestion> questions){
-			
+		public StandardQuestionState(List<StandardQuestion> stdQuestions){
+			super(new ArrayList<Question>(stdQuestions));
 		}
 		
 		/**
@@ -146,7 +147,7 @@ public class BookQuestions {
 	}
 	
 	/**
-	 * 
+	 * True if there are any more questions remaining in the quiz.
 	 * @return
 	 */
 	public boolean hasMoreQuestions(){
@@ -172,11 +173,14 @@ public class BookQuestions {
 	}
 	
 	/**
-	 * 
+	 * Processes the answer submitted by the user. BookQuestions relies on its current state
+	 * to handle the processing. This method may throw an EmptyQuestionListException if the
+	 * answer cannot be processed.
 	 * @param string
 	 * @return
+	 * @throws EmptyQuestionListException
 	 */
-	public String processAnswer(String string){
+	public String processAnswer(String answer){
 		return "";
 	}
 	
