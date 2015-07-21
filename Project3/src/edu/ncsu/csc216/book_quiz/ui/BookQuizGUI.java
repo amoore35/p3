@@ -47,6 +47,7 @@ public class BookQuizGUI extends JFrame {
 	private static final String MESSAGE = "Message";
 	private static final String ERROR = "Error";
 	private static final String[] LABEL_ANSWER_CHOICES = {"A", "B", "C", "D"};
+	private static final String[] LABEL_QUESTION_TYPE = {"Easy Question", "Standard Question", "Advanced Question"};
 	
 	//Buttons and combo box
 	private JButton btnSubmit = new JButton(SUBMIT);
@@ -58,6 +59,8 @@ public class BookQuizGUI extends JFrame {
 	private JButton btnAdd = new JButton(ADD);
 	private JButton btnWrite = new JButton(WRITE);
 	private JButton btnOk = new JButton(OK);
+	private JComboBox<String> cmbAnswerChoices = new JComboBox<String>(LABEL_ANSWER_CHOICES);
+	private JComboBox<String> cmbQuestionType = new JComboBox<String>(LABEL_QUESTION_TYPE);
 	
 	//Labels and combo
 	private JLabel lblQuestionType = new JLabel("Question Type:");
@@ -77,6 +80,30 @@ public class BookQuizGUI extends JFrame {
 	
 	//Organizational and alignment boxes and panels
 	private JPanel pnlCenter = new JPanel();
+	private JPanel pnlQuestion = new JPanel(new FlowLayout());
+	private JPanel pnlQuestionChoices = new JPanel(new FlowLayout());
+	private JPanel pnlQuizButtons = new JPanel(new FlowLayout());
+	private JPanel pnlMainPageButtons = new JPanel(new FlowLayout());
+	private JPanel pnlQTypeLbl = new JPanel();
+	private JPanel pnlSeparator = new JPanel();
+	private JPanel pnlQOptions = new JPanel(new FlowLayout());
+	private JPanel pnlQuestionLbl = new JPanel(new FlowLayout());
+	private JPanel pnlQuestionInfo = new JPanel(new FlowLayout());
+	private JPanel pnlChoiceALbl = new JPanel(new FlowLayout());
+	private JPanel pnlChoiceAInfo = new JPanel(new FlowLayout());
+	private JPanel pnlChoiceBLbl = new JPanel(new FlowLayout());
+	private JPanel pnlChoiceBInfo = new JPanel(new FlowLayout());
+	private JPanel pnlChoiceCLbl = new JPanel(new FlowLayout());
+	private JPanel pnlChoiceCInfo = new JPanel(new FlowLayout());
+	private JPanel pnlChoiceDLbl = new JPanel(new FlowLayout());
+	private JPanel pnlChoiceDInfo = new JPanel(new FlowLayout());
+	private JPanel pnlAddWriteBtns = new JPanel(new FlowLayout());
+	private JPanel pnlDoneQuitBtns = new JPanel(new FlowLayout());
+	private JPanel pnlCorrectHint = new JPanel(new FlowLayout());
+	
+	
+	//Main window
+	private Container mainWindow = getContentPane();
 	
 	
 	
