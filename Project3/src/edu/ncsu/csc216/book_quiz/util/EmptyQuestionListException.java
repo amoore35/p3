@@ -11,7 +11,7 @@ package edu.ncsu.csc216.book_quiz.util;
 public class EmptyQuestionListException extends Exception {
 	
 	/** */
-	private static final String MESSAGE = "";
+	private static final String MESSAGE = "Exception: Empty Question List";
 	
 	/** */
 	private static final long serialVersionUID = 0;
@@ -20,7 +20,7 @@ public class EmptyQuestionListException extends Exception {
 	 * 
 	 */
 	public EmptyQuestionListException(){
-		
+		super(MESSAGE);
 	}
 	
 	/**
@@ -28,7 +28,7 @@ public class EmptyQuestionListException extends Exception {
 	 * @param message
 	 */
 	public EmptyQuestionListException(String message){
-		
+		super(message);
 	}
 
 }

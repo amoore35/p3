@@ -37,11 +37,7 @@ public class BookQuiz implements QuizMaster {
 	 */
 	public BookQuiz(String file) throws QuestionException{
 		//Attempts to create a QuestionReader with the file
-		try{
-			this.reader = new QuestionReader(file);
-		} catch (QuestionException e){
-			throw new QuestionException();
-		}
+		this.reader = new QuestionReader(file);
 		
 		//Creates lists from the question reader of each question type
 		List<StandardQuestion> stds = reader.getStandardQuestions();
