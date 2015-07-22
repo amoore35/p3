@@ -3,6 +3,7 @@
  */
 package edu.ncsu.csc216.book_quiz.question;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncsu.csc216.book_quiz.util.EmptyQuestionListException;
@@ -38,11 +39,18 @@ public abstract class QuestionState {
 	private List<Question> askedQuestions;
 	
 	/**
-	 * 
-	 * @param questions
+	 * Constructor for the QuestionState that sets the currentQuestion and
+	 * adds the given questions to the list of waitingQuestions
+	 * @param questions the list of questions to start the QuestionState with
 	 */
 	public QuestionState(List<Question> questions){
+		waitingQuestions = new ArrayList<Question>();
+		currentQuestion = new Question();
+		askedQuestions = new ArrayList<Question>();
 		
+		waitingQuestions.addAll(questions);
+		currentQuestion = waitingQuestions.remove(0);
+		askedQuestions.add(currentQuestion);
 	}
 	
 	/**
@@ -51,14 +59,14 @@ public abstract class QuestionState {
 	 * concrete state (nested classes inside BookQuestions) defines this method according to
 	 * the transitions that go from that state. What should happen in each concrete state is
 	 * defined in UC7, S1.
-	 * @param answer
-	 * @return
+	 * @param answer the answer to be processed
+	 * @return the String that is appropriate for a response to the given answer
 	 */
 	public abstract String processAnswer(String answer);
 	
 	/**
 	 * True if currentQuestion is not null or waitingQuestions is not empty.
-	 * @return
+	 * @return true if there are more questions, false otherwise
 	 */
 	public boolean hasMoreQuestions(){
 		if (currentQuestion == null){
@@ -72,55 +80,57 @@ public abstract class QuestionState {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the question text of the current question
+	 * @return the current question text
 	 * @throws EmptyQuestionListException
 	 */
 	public String getCurrentQuestionText() throws EmptyQuestionListException{
 		if (currentQuestion == null){
 			throw new EmptyQuestionListException();
 		}
-		return "";
+		return currentQuestion.getQuestion();
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns an array of strings of the current question choices
+	 * @return currentChoices the question choices of the current question
 	 * @throws EmptyQuestionListException if currentQuestion is null
 	 */
 	public String[] getCurrentQuestionChoices() throws EmptyQuestionListException{
 		if (currentQuestion == null){
 			throw new EmptyQuestionListException();
 		}
-		return null;
+		String[] currentChoices = {currentQuestion.getChoiceA(), currentQuestion.getChoiceB(),
+				currentQuestion.getChoiceC(), currentQuestion.getChoiceD()};
+		return currentChoices;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the correct answer for the current question being asked
+	 * @return the current questions answer
 	 * @throws EmptyQuestionListException if currentQuestion is null
 	 */
 	public String getCurrentQuestionAnswer() throws EmptyQuestionListException{
 		if (currentQuestion == null){
 			throw new EmptyQuestionListException();
 		}
-		return "";
+		return currentQuestion.getAnswer();
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the current Question
+	 * @return currentQuestion the currentQuestion
 	 * @throws EmptyQuestionListException if currentQuestion is null
 	 */
 	public Question getCurrentQuestion() throws EmptyQuestionListException{
 		if (currentQuestion == null){
 			throw new EmptyQuestionListException();
 		}
-		return null;
+		return currentQuestion;
 	}
 	
 	/**
-	 * Sets currentQuestion to the next item in the waitinQuestions list, or null if there
+	 * Sets currentQuestion to the next item in the waitingQuestions list, or null if there
 	 * are no more questions in the list. The currentQuestion is added to the end of the 
 	 * askedQuestions list.
 	 */
@@ -141,17 +151,23 @@ public abstract class QuestionState {
 	 * @param question the question to add to the end of the waitingQuestions list
 	 */
 	public void addQuestion(Question question){
+		waitingQuestions.add(question);
+		if (!hasMoreQuestions()){
+			nextQuestion();
+		}
 		
 	}
 	
 	/**
 	 * Returns a list of questions. The list of questions combines the askedQuestions with the
 	 * waitingQuestions. The askedQuestions are added to the joint list first.
-	 * @return
+	 * @return questions the list of all the questions
 	 */
 	public List<Question> getQuestions(){
-		return null;
-		
+		ArrayList<Question> questions = new ArrayList<Question>();
+		questions.addAll(askedQuestions);
+		questions.addAll(waitingQuestions);
+		return questions;
 	}
 
 }

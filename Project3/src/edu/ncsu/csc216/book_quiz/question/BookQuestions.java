@@ -6,6 +6,7 @@ package edu.ncsu.csc216.book_quiz.question;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ncsu.csc216.book_quiz.util.EmptyQuestionListException;
 import edu.ncsu.csc216.question_library.AdvancedQuestion;
 import edu.ncsu.csc216.question_library.ElementaryQuestion;
 import edu.ncsu.csc216.question_library.Question;
@@ -59,6 +60,7 @@ public class BookQuestions {
 		 */
 		public AdvancedQuestionState(List<AdvancedQuestion> advQuestions){
 			super(new ArrayList<Question>(advQuestions));
+			
 		}
 		
 		/**
@@ -144,31 +146,37 @@ public class BookQuestions {
 	public BookQuestions(List<StandardQuestion> standard, List<ElementaryQuestion> elem,
 			List<AdvancedQuestion> advanced){
 		
-	}
-	
-	/**
-	 * True if there are any more questions remaining in the quiz.
-	 * @return
-	 */
-	public boolean hasMoreQuestions(){
-		return false;
+		this.elemState = new ElementaryQuestionState(elem);
+		this.stdState = new StandardQuestionState(standard);
+		this.advState = new AdvancedQuestionState(advanced);
+		this.state = this.stdState;
 		
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * True if there are any more questions remaining in the quiz, false otherwise.
+	 * @return true if more questions remaining in quiz, false otherwise
 	 */
-	public String getCurrentQuestionText(){
-		return "";
+	public boolean hasMoreQuestions(){
+		return state.hasMoreQuestions();
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the text of the current question
+	 * @return the string of the current question
+	 * @throws EmptyQuestionListException if the list is empty
 	 */
-	public String[] getCurrentQuestionChoices(){
-		return null;
+	public String getCurrentQuestionText() throws EmptyQuestionListException{
+		return state.getCurrentQuestionText();
+	}
+	
+	/**
+	 * Returns the question choices of the current question
+	 * @return an array of strings that contain the current question choices
+	 * @throws EmptyQuestionListException if the list is empty
+	 */
+	public String[] getCurrentQuestionChoices() throws EmptyQuestionListException{
+		return state.getCurrentQuestionChoices();
 		
 	}
 	
@@ -176,52 +184,52 @@ public class BookQuestions {
 	 * Processes the answer submitted by the user. BookQuestions relies on its current state
 	 * to handle the processing. This method may throw an EmptyQuestionListException if the
 	 * answer cannot be processed.
-	 * @param string
-	 * @return
-	 * @throws EmptyQuestionListException
+	 * @param answer the answer to be processed
+	 * @return the string that should be returned based on the given answer
+	 * @throws EmptyQuestionListException if the answer cannot be processed
 	 */
-	public String processAnswer(String answer){
-		return "";
+	public String processAnswer(String answer) throws EmptyQuestionListException{
+		return state.processAnswer(answer);
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the number of questions answered correctly in the book quiz
+	 * @return numCorrectAnswers the number of questions answered correctly
 	 */
 	public int getNumCorrectQuestions(){
-		return 0;
+		return numCorrectAnswers;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the number of questions attempted in the book quiz
+	 * @return numAttemptedQuests the number of attempted questions
 	 */
 	public int getNumAttemptedQuestions(){
-		return 0;
+		return numAttemptQuests;
 	}
 	
 	/**
-	 * 
-	 * @param question
+	 * Adds a standard question to the list of questions
+	 * @param question the question to add
 	 */
 	public void addStandardQuestion(StandardQuestion question){
-		
+		stdState.addQuestion(question);
 	}
 	
 	/**
-	 * 
-	 * @param question
+	 * Adds an elementary question to the list of questions
+	 * @param question the question to add
 	 */
 	public void addElementaryQuestion(ElementaryQuestion question){
-		
+		elemState.addQuestion(question);
 	}
 	
 	/**
-	 * 
-	 * @param question
+	 * Adds an advanced question to the list of questions
+	 * @param question the question to add
 	 */
 	public void addAdvancedQuestion(AdvancedQuestion question){
-		
+		advState.addQuestion(question);
 	}
 	
 	/**
@@ -229,7 +237,7 @@ public class BookQuestions {
 	 * @return
 	 */
 	public List<Question> getStandardQuestions(){
-		return null;
+		return stdState.getQuestions();
 		
 	}
 	
@@ -238,7 +246,7 @@ public class BookQuestions {
 	 * @return
 	 */
 	public List<Question> getElementaryQuestions(){
-		return null;
+		return elemState.getQuestions();
 		
 	}
 	
@@ -247,7 +255,7 @@ public class BookQuestions {
 	 * @return
 	 */
 	public List<Question> getAdvancedQuestions(){
-		return null;
+		return advState.getQuestions();
 		
 	}
 

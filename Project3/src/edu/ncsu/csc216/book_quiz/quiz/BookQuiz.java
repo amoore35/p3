@@ -9,6 +9,7 @@ import edu.ncsu.csc216.book_quiz.question.BookQuestions;
 import edu.ncsu.csc216.book_quiz.util.EmptyQuestionListException;
 import edu.ncsu.csc216.question_library.AdvancedQuestion;
 import edu.ncsu.csc216.question_library.ElementaryQuestion;
+import edu.ncsu.csc216.question_library.Question;
 import edu.ncsu.csc216.question_library.QuestionException;
 import edu.ncsu.csc216.question_library.QuestionReader;
 import edu.ncsu.csc216.question_library.QuestionWriter;
@@ -46,6 +47,8 @@ public class BookQuiz implements QuizMaster {
 		
 		this.questions = new BookQuestions(stds, elems, advs);
 		
+		this.writer = null;
+		
 	}
 
 	/**
@@ -62,7 +65,7 @@ public class BookQuiz implements QuizMaster {
 	 * @throws EmptyQuestionListException if there is no current question
 	 */
 	public String getCurrentQuestionText() throws EmptyQuestionListException {
-		return null;
+		return questions.getCurrentQuestionText();
 	}
 
 	/**
@@ -72,8 +75,7 @@ public class BookQuiz implements QuizMaster {
 	 * @throws EmptyQuestionListException if there is no current question
 	 */
 	public String[] getCurrentQuestionChoices() throws EmptyQuestionListException {
-		// TODO Auto-generated method stub
-		return null;
+		return questions.getCurrentQuestionChoices();
 	}
 
 	/**
@@ -83,8 +85,7 @@ public class BookQuiz implements QuizMaster {
 	 * @throws EmptyQuestionListException if there is no current question
 	 */
 	public String processAnswer(String answer) throws EmptyQuestionListException {
-		// TODO Auto-generated method stub
-		return null;
+		return questions.processAnswer(answer);
 	}
 
 	/**
@@ -92,8 +93,7 @@ public class BookQuiz implements QuizMaster {
 	 * @return the number of correct answers
 	 */
 	public int getNumCorrectQuestions() {
-		// TODO Auto-generated method stub
-		return 0;
+		return questions.getNumCorrectQuestions();
 	}
 
 	/**
@@ -101,8 +101,7 @@ public class BookQuiz implements QuizMaster {
 	 * @return the number of attempts
 	 */
 	public int getNumAttemptedQuestions() {
-		// TODO Auto-generated method stub
-		return 0;
+		return questions.getNumAttemptedQuestions();
 	}
 
 	/**
@@ -114,8 +113,33 @@ public class BookQuiz implements QuizMaster {
 	 */
 	public void addStandardQuestion(String questionText,
 			String[] questionChoices, String correctAnswer) {
+		//Trim all strings to get rid of trailing and leading whitespace
+		questionText.trim();
+		for (String choice : questionChoices){
+			choice.trim();
+		}
+		correctAnswer.trim();
 		
+		//Check for null or empty inputs
+		if (questionText.equals(null) || questionText.equals("") || correctAnswer.equals(null)
+				|| correctAnswer.equals("")){
+			throw new IllegalArgumentException();
+		}
+		for (String choice : questionChoices){
+			if (choice.equals(null) || choice.equals("")){
+				throw new IllegalArgumentException();
+			}
+		}
 		
+		//Create new StandardQuestion and use setters
+		StandardQuestion standardQuestion = new StandardQuestion();
+		standardQuestion.setQuestion(questionText);
+		standardQuestion.setChoiceA(questionChoices[0]);
+		standardQuestion.setChoiceB(questionChoices[1]);
+		standardQuestion.setChoiceC(questionChoices[2]);
+		standardQuestion.setChoiceD(questionChoices[3]);
+		standardQuestion.setAnswer(correctAnswer);
+		questions.addStandardQuestion(standardQuestion);
 	}
 
 	/**
@@ -128,7 +152,35 @@ public class BookQuiz implements QuizMaster {
 	 */
 	public void addElementaryQuestion(String questionText,
 			String[] questionChoices, String correctAnswer, String hint) {
-		// TODO Auto-generated method stub
+		//Trim all strings to get rid of trailing and leading whitespace
+		questionText.trim();
+		for (String choice : questionChoices){
+			choice.trim();
+		}
+		correctAnswer.trim();
+		hint.trim();
+		
+		//Check for null or empty inputs
+		if (questionText.equals(null) || questionText.equals("") || correctAnswer.equals(null)
+				|| correctAnswer.equals("") || hint.equals(null) || hint.equals("")){
+			throw new IllegalArgumentException();
+		}
+		for (String choice : questionChoices){
+			if (choice.equals(null) || choice.equals("")){
+				throw new IllegalArgumentException();
+			}
+		}
+		
+		//Create new ElementaryQuestion and use setters
+		ElementaryQuestion elementaryQuestion = new ElementaryQuestion();
+		elementaryQuestion.setQuestion(questionText);
+		elementaryQuestion.setChoiceA(questionChoices[0]);
+		elementaryQuestion.setChoiceB(questionChoices[1]);
+		elementaryQuestion.setChoiceC(questionChoices[2]);
+		elementaryQuestion.setChoiceD(questionChoices[3]);
+		elementaryQuestion.setAnswer(correctAnswer);
+		elementaryQuestion.setHint(hint);
+		questions.addElementaryQuestion(elementaryQuestion);
 		
 	}
 
@@ -142,8 +194,35 @@ public class BookQuiz implements QuizMaster {
 	 */
 	public void addAdvancedQuestion(String questionText,
 			String[] questionChoices, String correctAnswer, String comment) {
-		// TODO Auto-generated method stub
+		//Trim all strings to get rid of trailing and leading whitespace
+		questionText.trim();
+		for (String choice : questionChoices){
+			choice.trim();
+		}
+		correctAnswer.trim();
+		comment.trim();
 		
+		//Check for null or empty inputs
+		if (questionText.equals(null) || questionText.equals("") || correctAnswer.equals(null)
+				|| correctAnswer.equals("") || comment.equals(null) || comment.equals("")){
+			throw new IllegalArgumentException();
+		}
+		for (String choice : questionChoices){
+			if (choice.equals(null) || choice.equals("")){
+				throw new IllegalArgumentException();
+			}
+		}
+		
+		//Create new AdvancedQuestion and use setters
+		AdvancedQuestion advancedQuestion = new AdvancedQuestion();
+		advancedQuestion.setQuestion(questionText);
+		advancedQuestion.setChoiceA(questionChoices[0]);
+		advancedQuestion.setChoiceB(questionChoices[1]);
+		advancedQuestion.setChoiceC(questionChoices[2]);
+		advancedQuestion.setChoiceD(questionChoices[3]);
+		advancedQuestion.setAnswer(correctAnswer);
+		advancedQuestion.setComment(comment);
+		questions.addAdvancedQuestion(advancedQuestion);
 	}
 
 	/**
@@ -154,22 +233,11 @@ public class BookQuiz implements QuizMaster {
 	 */
 	public void writeQuestions(String questionFile) throws QuestionException {
 		this.writer = new QuestionWriter(questionFile);
+		List<Question> stds = questions.getStandardQuestions();
+		List<Question> elems = questions.getElementaryQuestions();
+		List<Question> advs = questions.getAdvancedQuestions();
+
 		
-	}
-	
-	/**
-	 * 
-	 * @param string
-	 */
-	private void validateString(String string){
-		
-	}
-	
-	/**
-	 * 
-	 * @param array
-	 */
-	private void ValidateStringArray(String[] array){
 		
 	}
 
