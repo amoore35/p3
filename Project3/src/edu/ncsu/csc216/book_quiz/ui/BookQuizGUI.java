@@ -110,7 +110,133 @@ public class BookQuizGUI extends JFrame {
 	
 	
 	public BookQuizGUI(String file) throws QuestionException{
-		quizMaster = new BookQuiz(file);
+		try{
+			if (file == null){
+				String userPickFilename = null;
+				JFileChooser fc = new JFileChooser(".");
+				fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+				int returnVal = fc.showOpenDialog(this);
+				if (returnVal == JFileChooser.APPROVE_OPTION){
+					userPickFilename = fc.getSelectedFile().getName();
+				}
+				quizMaster = new BookQuiz(userPickFilename);
+			}
+			else{
+				quizMaster = new BookQuiz(file);
+			}
+			initializeUI();
+			this.setVisible(true);
+		} catch (IllegalArgumentException e){
+			JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), ERROR, JOptionPane.ERROR_MESSAGE);
+		}
+	} 
+	
+	/**
+	 * 
+	 * @param ae
+	 */
+	public void actionPerformed(ActionEvent ae){
+		
 	}
+	
+	/**
+	 * Private method that creates the user interface.
+	 */
+	private void initializeUI(){
+		//Initialize the main frame parameters.
+		setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		setTitle(WINDOW_TITLE);
+		
+		//Include all visual components.
+		setBordersAndPanels();
+		
+		//Enable buttons to respond to events.
+		addListeners();
+	}
+	
+	/**
+	 * Private method that adds action listeners to all the buttons.
+	 */
+	private void addListeners(){
+		
+	}
+	
+	/**
+	 * Private method that adds most of the components to the interface and formats them appropriately
+	 */
+	private void setBordersAndPanels(){
+		
+	}
+	
+	/**
+	 * Private method that sets up the main window panel
+	 */
+	private void setUpMainWindowPanel(){
+		
+	}
+	
+	/**
+	 * Private method that sets up the addQuestionsPanel
+	 */
+	private void setUpAddQuestionsPanel(){
+		
+	}
+	
+	/**
+	 * Private method that sets up the bookQuiz panel
+	 */
+	private void setUpBookQuizPanel(){
+		
+	}
+	
+	/**
+	 * Private method that exits the program
+	 */
+	private static void stopExecution(){
+		System.exit(0);
+	}
+	
+	/**
+	 * Starts the program.
+	 * @param args command line args
+	 * @throws QuestionException 
+	 */
+	public static void main(String[] args) throws QuestionException{
+		try{
+			if (args.length > 0){
+				new BookQuizGUI(args[0]);
+			}
+			else{
+				new BookQuizGUI(null);
+			}
+		} catch (IllegalArgumentException e){
+			JOptionPane.showMessageDialog(new JFrame(),  "Incorrect Question File Specified");
+			stopExecution();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

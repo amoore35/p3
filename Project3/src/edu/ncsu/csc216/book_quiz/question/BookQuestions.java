@@ -33,7 +33,7 @@ public class BookQuestions {
 	public static final String INCORRECT = "Incorrect!";
 	
 	/** */
-	public static final String SEPARATOR = "";
+	public static final String SEPARATOR = " ";
 	
 	/** Represents the elementary question state */
 	private QuestionState elemState;
@@ -60,19 +60,27 @@ public class BookQuestions {
 		 */
 		public AdvancedQuestionState(List<AdvancedQuestion> advQuestions){
 			super(new ArrayList<Question>(advQuestions));
-			
+			state = advState;
 		}
 		
 		/**
 		 * 
 		 * @param answer
 		 * @return
+		 * @throws EmptyQuestionListException 
 		 */
-		public String processAnswer(String answer){
-			return "";
+		public String processAnswer(String answer) throws EmptyQuestionListException{
+			if (advState.getCurrentQuestionAnswer().equals(answer)){
+				numAttemptQuests++;
+				numCorrectAnswers++;
+				return CORRECT + SEPARATOR + ((AdvancedQuestion) (advState.getCurrentQuestion())).getComment();
+			}
+			else{
+				numAttemptQuests++;
+				state = stdState;
+				return INCORRECT;
+			}
 		}
-		
-		
 	}
 	
 	/**
@@ -94,15 +102,47 @@ public class BookQuestions {
 		 */
 		public ElementaryQuestionState(List<ElementaryQuestion> elemQuestions){
 			super(new ArrayList<Question>(elemQuestions));
+			state = elemState;
+			attempts = 0;
+			numCorrectInRow = 0;
 		}
 		
 		/**
 		 * 
 		 * @param answer
 		 * @return
+		 * @throws EmptyQuestionListException 
 		 */
-		public String processAnswer(String answer){
-			return "";
+		public String processAnswer(String answer) throws EmptyQuestionListException{
+			if (elemState.getCurrentQuestionAnswer().equals(answer)){
+				numCorrectAnswers++;
+				numAttemptQuests++;
+				numCorrectInRow++;
+				attempts++;
+				if (numCorrectInRow == 1){
+					return CORRECT;
+				}
+				if (numCorrectInRow == 2){
+					state = stdState;
+					//Reset local variables
+					numCorrectInRow = 0;
+					attempts = 0;
+					return CORRECT;
+				}
+			}
+			else{
+				numCorrectInRow = 0;
+				attempts++;
+				if (attempts == 1){
+					numAttemptQuests++;
+					return INCORRECT + SEPARATOR + ((ElementaryQuestion) (elemState.getCurrentQuestion())).getHint();
+				}
+				else{
+					attempts = 0;
+					return INCORRECT;
+				}
+			}
+			throw new EmptyQuestionListException();
 		}
 		
 	}
@@ -123,17 +163,38 @@ public class BookQuestions {
 		 */
 		public StandardQuestionState(List<StandardQuestion> stdQuestions){
 			super(new ArrayList<Question>(stdQuestions));
+			state = stdState;
+			numCorrectInRow = 0;
 		}
 		
 		/**
 		 * 
 		 * @param answer
 		 * @return
+		 * @throws EmptyQuestionListException 
 		 */
-		public String processAnswer(String answer){
-			return "";
+		public String processAnswer(String answer) throws EmptyQuestionListException{
+			if (stdState.getCurrentQuestionAnswer().equals(answer)){
+				numCorrectAnswers++;
+				numAttemptQuests++;
+				numCorrectInRow++;
+				if (numCorrectInRow < 2){	
+					return CORRECT;
+				}
+				else{
+					//Reset numCorrectInRow in case the state returns to standard
+					numCorrectInRow = 0;
+					state = advState;
+					return CORRECT;
+				}
+			}
+			else{
+				numAttemptQuests++;
+				numCorrectInRow = 0;
+				state = elemState;
+				return INCORRECT;
+			}
 		}
-		
 	}
 	
 	
@@ -233,8 +294,8 @@ public class BookQuestions {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns a list of standard questions
+	 * @return a list of standard questions
 	 */
 	public List<Question> getStandardQuestions(){
 		return stdState.getQuestions();
@@ -242,8 +303,8 @@ public class BookQuestions {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns a list of elementary questions
+	 * @return a list of elementary questions
 	 */
 	public List<Question> getElementaryQuestions(){
 		return elemState.getQuestions();
@@ -251,8 +312,8 @@ public class BookQuestions {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns a list of advanced questions
+	 * @return a list of advanced questions
 	 */
 	public List<Question> getAdvancedQuestions(){
 		return advState.getQuestions();

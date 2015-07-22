@@ -61,8 +61,9 @@ public abstract class QuestionState {
 	 * defined in UC7, S1.
 	 * @param answer the answer to be processed
 	 * @return the String that is appropriate for a response to the given answer
+	 * @throws EmptyQuestionListException 
 	 */
-	public abstract String processAnswer(String answer);
+	public abstract String processAnswer(String answer) throws EmptyQuestionListException;
 	
 	/**
 	 * True if currentQuestion is not null or waitingQuestions is not empty.
