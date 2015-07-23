@@ -14,7 +14,7 @@ public class EmptyQuestionListException extends Exception {
 	private static final String MESSAGE = "Exception: Empty Question List";
 	
 	/** */
-	private static final long serialVersionUID = 0;
+	private static final long serialVersionUID = 1;
 	
 	/**
 	 * 

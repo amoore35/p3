@@ -24,8 +24,8 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 	private QuizMaster quizMaster;
 	
 	//Parameters for component sizes and spacings
-	private static final int FRAME_WIDTH = 500; 
-	private static final int FRAME_HEIGHT = 600; 
+	private static final int FRAME_WIDTH = 700; 
+	private static final int FRAME_HEIGHT = 350; 
 	private static final int FIELD_WIDTH = 20;
 
 	
@@ -75,6 +75,7 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 	private JLabel lblChoiceC = new JLabel("Choice C:");
 	private JLabel lblChoiceD = new JLabel("Choice D:");
 	private JLabel lblAnswer = new JLabel("Answer:");
+	private JLabel lblComment = new JLabel();
 	
 	//Text fields
 	private JTextField txtQ = new JTextField(FIELD_WIDTH);
@@ -84,17 +85,15 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 	private JTextField txtChoiceD = new JTextField(FIELD_WIDTH);
 	
 	//Organizational and alignment boxes and panels
-	private JPanel pnlCenter = new JPanel();
 	private JPanel pnlMainPage = new JPanel(new FlowLayout());
-	private JPanel pnlAddPage = new JPanel(new BorderLayout());
-	private JPanel pnlQuizPage = new JPanel();
+	private JPanel pnlAddQFull = new JPanel(new BorderLayout());
+	private JPanel pnlAddPage = new JPanel(new GridLayout(8, 2));
+	private JPanel pnlQuizPage = new JPanel(new BorderLayout());
 	private JPanel pnlQuizQAndAs = new JPanel(new GridLayout(6, 1));
-	private JPanel pnlAddPgTxtLbls = new JPanel(new GridLayout(7, 1));
-	private JPanel pnlAddPgInputs = new JPanel(new GridLayout(7, 1));
 	private JPanel pnlAddWriteBtns = new JPanel(new FlowLayout());
 	private JPanel pnlDoneQuitBtns = new JPanel(new FlowLayout());
-	private JPanel pnlAddPgBottom = new JPanel(new FlowLayout());
 	private JPanel pnlQuizPgBottom = new JPanel(new FlowLayout());
+	private JPanel bottom = new JPanel(new GridLayout(1, 2));
 	
 	
 	
@@ -135,7 +134,7 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent ae){
 		//Add questions button
 		if (ae.getSource().equals(btnAddQs)){
-			setContentPane(pnlAddPage);
+			setContentPane(pnlAddQFull);
 			invalidate();
 			validate();
 		}
@@ -215,29 +214,29 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		pnlMainPage.add(btnQuit);
 		
 		//Set up add page panels
-		pnlAddPgTxtLbls.add(lblQuestionType);
-		pnlAddPgTxtLbls.add(lblQuestion);
-		pnlAddPgTxtLbls.add(lblChoiceA);
-		pnlAddPgTxtLbls.add(lblChoiceB);
-		pnlAddPgTxtLbls.add(lblChoiceC);
-		pnlAddPgTxtLbls.add(lblChoiceD);
-		pnlAddPgTxtLbls.add(lblAnswer);
-		pnlAddPage.add(pnlAddPgTxtLbls, BorderLayout.WEST);
-		pnlAddPgInputs.add(cmbQuestionType);
-		pnlAddPgInputs.add(txtQ);
-		pnlAddPgInputs.add(txtChoiceA);
-		pnlAddPgInputs.add(txtChoiceB);
-		pnlAddPgInputs.add(txtChoiceC);
-		pnlAddPgInputs.add(txtChoiceD);
-		pnlAddPgInputs.add(cmbAnswerChoices);
-		pnlAddPage.add(pnlAddPgInputs, BorderLayout.EAST);
+		pnlAddPage.add(lblQuestionType);
+		pnlAddPage.add(cmbQuestionType);
+		pnlAddPage.add(lblQuestion);
+		pnlAddPage.add(txtQ);
+		pnlAddPage.add(lblChoiceA);
+		pnlAddPage.add(txtChoiceA);
+		pnlAddPage.add(lblChoiceB);
+		pnlAddPage.add(txtChoiceB);
+		pnlAddPage.add(lblChoiceC);
+		pnlAddPage.add(txtChoiceC);
+		pnlAddPage.add(lblChoiceD);
+		pnlAddPage.add(txtChoiceD);
+		pnlAddPage.add(lblAnswer);
+		pnlAddPage.add(cmbAnswerChoices);
 		pnlAddWriteBtns.add(btnAdd);
 		pnlAddWriteBtns.add(btnWrite);
-		pnlAddPgBottom.add(pnlAddWriteBtns);
 		pnlDoneQuitBtns.add(btnDone);
 		pnlDoneQuitBtns.add(btnQuit2);
-		pnlAddPgBottom.add(pnlDoneQuitBtns);
-		pnlAddPage.add(pnlAddPgBottom, BorderLayout.SOUTH);
+		pnlAddQFull.add(pnlAddPage, BorderLayout.CENTER);
+		bottom.add(pnlAddWriteBtns);
+		bottom.add(pnlDoneQuitBtns);
+		pnlAddQFull.add(bottom, BorderLayout.SOUTH);
+
 		
 		//Set up quiz page panels
 		pnlQuizQAndAs.add(new JLabel(quizMaster.getCurrentQuestionText()));
@@ -250,39 +249,16 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		group.add(btn2);
 		group.add(btn3);
 		group.add(btn4);
-		pnlQuizQAndAs.add(btn1, 1);
-		pnlQuizQAndAs.add(btn2, 2);
-		pnlQuizQAndAs.add(btn3, 3);
-		pnlQuizQAndAs.add(btn4, 4);
-		pnlQuizPage.add(pnlQuizQAndAs, BorderLayout.WEST);
+		pnlQuizQAndAs.add(btn1);
+		pnlQuizQAndAs.add(btn2);
+		pnlQuizQAndAs.add(btn3);
+		pnlQuizQAndAs.add(btn4);
+		pnlQuizPage.add(pnlQuizQAndAs, BorderLayout.CENTER);
 		pnlQuizPgBottom.add(btnSubmit);
 		pnlQuizPgBottom.add(btnNext);
 		pnlQuizPgBottom.add(btnDone2);
 		pnlQuizPgBottom.add(btnQuit3);
 		pnlQuizPage.add(pnlQuizPgBottom, BorderLayout.SOUTH);
-		
-	}
-	
-	/**
-	 * Private method that sets up the main window panel
-	 */
-	private void setUpMainWindowPanel(){
-		pnlMainPage.setLayout(new BoxLayout(pnlMainPage, getDefaultCloseOperation()));
-		
-		
-	}
-	
-	/**
-	 * Private method that sets up the addQuestionsPanel
-	 */
-	private void setUpAddQuestionsPanel(){
-		
-	}
-	
-	/**
-	 * Private method that sets up the bookQuiz panel
-	 */
-	private void setUpBookQuizPanel(){
 		
 	}
 	
