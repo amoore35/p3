@@ -18,7 +18,7 @@ import javax.swing.*;
  * @author AlexiaMoore
  *
  */
-public class BookQuizGUI extends JFrame {
+public class BookQuizGUI extends JFrame implements ActionListener {
 	
 	//Backend model
 	private QuizMaster quizMaster;
@@ -27,11 +27,7 @@ public class BookQuizGUI extends JFrame {
 	private static final int FRAME_WIDTH = 500; 
 	private static final int FRAME_HEIGHT = 600; 
 	private static final int FIELD_WIDTH = 20;
-	private static final int VERTICAL_SPACER = 5;
-	private static final int TOP_PAD = 5;
-	private static final int LEFT_PAD = 10;
-	private static final int RIGHT_PAD = 10;
-	private static final int BOTTOM_PAD = 10;
+
 	
 	//Window titles
 	private static final String WINDOW_TITLE = "Book Quiz";
@@ -46,7 +42,6 @@ public class BookQuizGUI extends JFrame {
 	private static final String ADD = "Add";
 	private static final String WRITE = "Write All";
 	private static final String OK = "OK";
-	private static final String MESSAGE = "Message";
 	private static final String ERROR = "Error";
 	private static final String[] LABEL_ANSWER_CHOICES = {"A", "B", "C", "D"};
 	private static final String[] LABEL_QUESTION_TYPE = {"Easy Question", "Standard Question", "Advanced Question"};
@@ -55,7 +50,10 @@ public class BookQuizGUI extends JFrame {
 	private JButton btnSubmit = new JButton(SUBMIT);
 	private JButton btnNext = new JButton(NEXT_Q);
 	private JButton btnDone = new JButton(DONE);
+	private JButton btnDone2 = new JButton(DONE);
 	private JButton btnQuit = new JButton(QUIT);
+	private JButton btnQuit2 = new JButton(QUIT);
+	private JButton btnQuit3 = new JButton(QUIT);
 	private JButton btnAddQs = new JButton(ADD_QS);
 	private JButton btnQuiz = new JButton(QUIZ);
 	private JButton btnAdd = new JButton(ADD);
@@ -67,6 +65,7 @@ public class BookQuizGUI extends JFrame {
 	private JRadioButton btn2 = new JRadioButton();
 	private JRadioButton btn3 = new JRadioButton();
 	private JRadioButton btn4 = new JRadioButton();
+	private ButtonGroup group = new ButtonGroup();
 	
 	//Labels and combo
 	private JLabel lblQuestionType = new JLabel("Question Type:");
@@ -90,13 +89,13 @@ public class BookQuizGUI extends JFrame {
 	private JPanel pnlAddPage = new JPanel(new BorderLayout());
 	private JPanel pnlQuizPage = new JPanel();
 	private JPanel pnlQuizQAndAs = new JPanel(new GridLayout(6, 1));
-	private JPanel pnlQuizPgBtns = new JPanel(new FlowLayout());
 	private JPanel pnlAddPgTxtLbls = new JPanel(new GridLayout(7, 1));
 	private JPanel pnlAddPgInputs = new JPanel(new GridLayout(7, 1));
 	private JPanel pnlAddWriteBtns = new JPanel(new FlowLayout());
 	private JPanel pnlDoneQuitBtns = new JPanel(new FlowLayout());
 	private JPanel pnlAddPgBottom = new JPanel(new FlowLayout());
-	private CardLayout mainCardLayout = new CardLayout(1, 1);
+	private JPanel pnlQuizPgBottom = new JPanel(new FlowLayout());
+	
 	
 	
 	
@@ -134,6 +133,30 @@ public class BookQuizGUI extends JFrame {
 	 * @param ae
 	 */
 	public void actionPerformed(ActionEvent ae){
+		//Add questions button
+		if (ae.getSource().equals(btnAddQs)){
+			setContentPane(pnlAddPage);
+			invalidate();
+			validate();
+		}
+		
+		//Quit button
+		if (ae.getSource().equals(btnQuit)){
+			stopExecution();
+		}
+		if (ae.getSource().equals(btnQuit2)){
+			stopExecution();
+		}
+		if (ae.getSource().equals(btnQuit3)){
+			stopExecution();
+		}
+		
+		//Book Quiz button
+		if (ae.getSource().equals(btnQuiz)){
+			setContentPane(pnlQuizPage);
+			invalidate();
+			validate();
+		}
 	
 	}
 	
@@ -145,6 +168,7 @@ public class BookQuizGUI extends JFrame {
 		//Initialize the main frame parameters.
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		setTitle(WINDOW_TITLE);
+		setLocation(100, 100);
 		
 		//Include all visual components.
 		setBordersAndPanels();
@@ -152,12 +176,30 @@ public class BookQuizGUI extends JFrame {
 		
 		//Enable buttons to respond to events.
 		addListeners();
+		
+		addWindowListener( new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				stopExecution();
+			}
+		});   	
 	}
 	
 	/**
 	 * Private method that adds action listeners to all the buttons.
 	 */
 	private void addListeners(){
+		btnAddQs.addActionListener(this);
+		btnQuit.addActionListener(this);
+		btnQuit2.addActionListener(this);
+		btnQuit3.addActionListener(this);
+		btnQuiz.addActionListener(this);
+		btnAdd.addActionListener(this);
+		btnDone.addActionListener(this);
+		btnDone2.addActionListener(this);
+		btnNext.addActionListener(this);
+		btnOk.addActionListener(this);
+		btnSubmit.addActionListener(this);
+		btnWrite.addActionListener(this);
 		
 		
 	}
@@ -189,7 +231,11 @@ public class BookQuizGUI extends JFrame {
 		pnlAddPgInputs.add(txtChoiceD);
 		pnlAddPgInputs.add(cmbAnswerChoices);
 		pnlAddPage.add(pnlAddPgInputs, BorderLayout.EAST);
+		pnlAddWriteBtns.add(btnAdd);
+		pnlAddWriteBtns.add(btnWrite);
 		pnlAddPgBottom.add(pnlAddWriteBtns);
+		pnlDoneQuitBtns.add(btnDone);
+		pnlDoneQuitBtns.add(btnQuit2);
 		pnlAddPgBottom.add(pnlDoneQuitBtns);
 		pnlAddPage.add(pnlAddPgBottom, BorderLayout.SOUTH);
 		
@@ -200,16 +246,20 @@ public class BookQuizGUI extends JFrame {
 		btn2.setText(btns[1]);
 		btn3.setText(btns[2]);
 		btn4.setText(btns[3]);
+		group.add(btn1);
+		group.add(btn2);
+		group.add(btn3);
+		group.add(btn4);
 		pnlQuizQAndAs.add(btn1, 1);
 		pnlQuizQAndAs.add(btn2, 2);
 		pnlQuizQAndAs.add(btn3, 3);
 		pnlQuizQAndAs.add(btn4, 4);
-		pnlQuizPage.add(pnlQuizQAndAs, BorderLayout.EAST);
-		
-		
-		
-		//Add main page, quiz, and add question panels to the UI.
-		pnlCenter.setLayout(mainCardLayout);
+		pnlQuizPage.add(pnlQuizQAndAs, BorderLayout.WEST);
+		pnlQuizPgBottom.add(btnSubmit);
+		pnlQuizPgBottom.add(btnNext);
+		pnlQuizPgBottom.add(btnDone2);
+		pnlQuizPgBottom.add(btnQuit3);
+		pnlQuizPage.add(pnlQuizPgBottom, BorderLayout.SOUTH);
 		
 	}
 	
