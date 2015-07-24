@@ -331,21 +331,5 @@ public class BookQuestions {
 		return advState.getQuestions();
 		
 	}
-	
-	/**
-	 * Private method for testing
-	 * @return
-	 */
-	public String getCurrentState(){
-		if (state.equals(advState)){
-			return "Advanced";
-		}
-		else if (state.equals(elemState)){
-			return "Elementary";
-		}
-		else{
-			return "Standard";
-		}
-	}
 
 }

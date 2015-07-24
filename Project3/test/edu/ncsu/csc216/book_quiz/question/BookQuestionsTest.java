@@ -35,6 +35,9 @@ public class BookQuestionsTest {
 	private List<AdvancedQuestion> advQs2;
 	private List<ElementaryQuestion> elemQs2;
 	private List<StandardQuestion> stdQs2;
+	private static final int ELEM_SIZE = 4;
+	private static final int ADV_SIZE = 2;
+	private static final int STD_SIZE = 3;
 
 	/**
 	 * @throws java.lang.Exception
@@ -262,7 +265,20 @@ public class BookQuestionsTest {
 	 */
 	@Test
 	public void testAddStandardQuestion() throws QuestionException {
-		QuestionWriter writer = new QuestionWriter("questions1.xml");
+		StandardQuestion stdQ = new StandardQuestion();
+		stdQ.setAnswer("a");
+		stdQ.setChoiceA("a");
+		stdQ.setChoiceB("b");
+		stdQ.setChoiceC("c");
+		stdQ.setChoiceD("d");
+		stdQ.setQuestion("What is the answer to this test question?");
+		
+		List<Question> standQs = questions.getStandardQuestions();
+		assertFalse(standQs.contains(stdQ));
+		questions.addStandardQuestion(stdQ);
+		
+		standQs = questions.getStandardQuestions();
+		assertTrue(standQs.contains(stdQ));
 		
 	}
 
@@ -271,7 +287,21 @@ public class BookQuestionsTest {
 	 */
 	@Test
 	public void testAddElementaryQuestion() {
-		fail("Not yet implemented");
+		ElementaryQuestion elemQ = new ElementaryQuestion();
+		elemQ.setAnswer("a");
+		elemQ.setChoiceA("a");
+		elemQ.setChoiceB("b");
+		elemQ.setChoiceC("c");
+		elemQ.setChoiceD("d");
+		elemQ.setQuestion("What is the answer to this test question?");
+		elemQ.setHint("Hint: it's not b.");
+		
+		List<Question> elemQs = questions.getElementaryQuestions();
+		assertFalse(elemQs.contains(elemQ));
+		questions.addElementaryQuestion(elemQ);
+		
+		elemQs = questions.getElementaryQuestions();
+		assertTrue(elemQs.contains(elemQ));
 	}
 
 	/**
@@ -279,7 +309,21 @@ public class BookQuestionsTest {
 	 */
 	@Test
 	public void testAddAdvancedQuestion() {
-		fail("Not yet implemented");
+		AdvancedQuestion advQ = new AdvancedQuestion();
+		advQ.setAnswer("a");
+		advQ.setChoiceA("a");
+		advQ.setChoiceB("b");
+		advQ.setChoiceC("c");
+		advQ.setChoiceD("d");
+		advQ.setQuestion("What is the answer to this test question?");
+		advQ.setComment("Nice job.");
+		
+		List<Question> advQs = questions.getAdvancedQuestions();
+		assertFalse(advQs.contains(advQ));
+		questions.addAdvancedQuestion(advQ);
+		
+		advQs = questions.getAdvancedQuestions();
+		assertTrue(advQs.contains(advQ));
 	}
 
 	/**
@@ -287,7 +331,14 @@ public class BookQuestionsTest {
 	 */
 	@Test
 	public void testGetStandardQuestions() {
-		fail("Not yet implemented");
+		List<Question> standQuests = questions.getStandardQuestions();
+		assertEquals("Standard Question 1", standQuests.get(0).getQuestion());
+		assertEquals("Choice a", standQuests.get(0).getChoiceA());
+		assertEquals("Choice b", standQuests.get(0).getChoiceB());
+		assertEquals("Choice c", standQuests.get(0).getChoiceC());
+		assertEquals("Choice d", standQuests.get(0).getChoiceD());
+		assertEquals("d", standQuests.get(0).getAnswer());
+		assertEquals(STD_SIZE, standQuests.size());
 	}
 
 	/**
@@ -295,7 +346,10 @@ public class BookQuestionsTest {
 	 */
 	@Test
 	public void testGetElementaryQuestions() {
-		fail("Not yet implemented");
+		List<Question> elemQuests = questions.getElementaryQuestions();
+		assertEquals("Here is a hint. The correct answer is d.", 
+				(((ElementaryQuestion) elemQuests.get(0)).getHint()));
+		assertEquals(ELEM_SIZE, elemQuests.size());
 	}
 
 	/**
@@ -303,7 +357,9 @@ public class BookQuestionsTest {
 	 */
 	@Test
 	public void testGetAdvancedQuestions() {
-		fail("Not yet implemented");
+		List<Question> advQuests = questions.getAdvancedQuestions();
+		assertEquals("Great work!", (((AdvancedQuestion) advQuests.get(0)).getComment()));
+		assertEquals(ADV_SIZE, advQuests.size());
 	}
 
 }
