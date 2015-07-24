@@ -73,11 +73,14 @@ public class BookQuestions {
 			if (advState.getCurrentQuestionAnswer().equals(answer)){
 				numAttemptQuests++;
 				numCorrectAnswers++;
-				return CORRECT + SEPARATOR + ((AdvancedQuestion) (advState.getCurrentQuestion())).getComment();
+				String comment = ((AdvancedQuestion) (advState.getCurrentQuestion())).getComment();
+				nextQuestion();
+				return CORRECT + SEPARATOR + comment;
 			}
 			else{
 				numAttemptQuests++;
 				state = stdState;
+				nextQuestion();
 				return INCORRECT;
 			}
 		}
@@ -116,10 +119,13 @@ public class BookQuestions {
 		public String processAnswer(String answer) throws EmptyQuestionListException{
 			if (elemState.getCurrentQuestionAnswer().equals(answer)){
 				numCorrectAnswers++;
-				numAttemptQuests++;
-				numCorrectInRow++;
-				attempts++;
-				if (numCorrectInRow == 1){
+				if (attempts == 0){
+					numCorrectInRow++;
+					numAttemptQuests++;
+				}
+				if (numCorrectInRow == 1 || numCorrectInRow == 0){
+					attempts = 0;
+					nextQuestion();
 					return CORRECT;
 				}
 				if (numCorrectInRow == 2){
@@ -127,6 +133,7 @@ public class BookQuestions {
 					//Reset local variables
 					numCorrectInRow = 0;
 					attempts = 0;
+					nextQuestion();
 					return CORRECT;
 				}
 			}
@@ -135,10 +142,12 @@ public class BookQuestions {
 				attempts++;
 				if (attempts == 1){
 					numAttemptQuests++;
-					return INCORRECT + SEPARATOR + ((ElementaryQuestion) (elemState.getCurrentQuestion())).getHint();
+					String hint = ((ElementaryQuestion) (state.getCurrentQuestion())).getHint();
+					return INCORRECT + SEPARATOR + hint;
 				}
 				else{
 					attempts = 0;
+					nextQuestion();
 					return INCORRECT;
 				}
 			}
@@ -174,17 +183,19 @@ public class BookQuestions {
 		 * @throws EmptyQuestionListException 
 		 */
 		public String processAnswer(String answer) throws EmptyQuestionListException{
-			if (stdState.getCurrentQuestionAnswer().equals(answer)){
+			if (state.getCurrentQuestionAnswer().equals(answer)){
 				numCorrectAnswers++;
 				numAttemptQuests++;
 				numCorrectInRow++;
 				if (numCorrectInRow < 2){	
+					nextQuestion();
 					return CORRECT;
 				}
 				else{
 					//Reset numCorrectInRow in case the state returns to standard
 					numCorrectInRow = 0;
 					state = advState;
+					nextQuestion();
 					return CORRECT;
 				}
 			}
@@ -192,6 +203,7 @@ public class BookQuestions {
 				numAttemptQuests++;
 				numCorrectInRow = 0;
 				state = elemState;
+				nextQuestion();
 				return INCORRECT;
 			}
 		}
@@ -318,6 +330,22 @@ public class BookQuestions {
 	public List<Question> getAdvancedQuestions(){
 		return advState.getQuestions();
 		
+	}
+	
+	/**
+	 * Private method for testing
+	 * @return
+	 */
+	public String getCurrentState(){
+		if (state.equals(advState)){
+			return "Advanced";
+		}
+		else if (state.equals(elemState)){
+			return "Elementary";
+		}
+		else{
+			return "Standard";
+		}
 	}
 
 }
