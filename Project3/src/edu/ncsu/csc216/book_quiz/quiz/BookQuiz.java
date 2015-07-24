@@ -3,6 +3,7 @@
  */
 package edu.ncsu.csc216.book_quiz.quiz;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncsu.csc216.book_quiz.question.BookQuestions;
@@ -233,12 +234,20 @@ public class BookQuiz implements QuizMaster {
 	 */
 	public void writeQuestions(String questionFile) throws QuestionException {
 		this.writer = new QuestionWriter(questionFile);
-		List<Question> stds = questions.getStandardQuestions();
-		List<Question> elems = questions.getElementaryQuestions();
-		List<Question> advs = questions.getAdvancedQuestions();
-
+		List<Question> stdQuestions = questions.getStandardQuestions();
+		for (Question q : stdQuestions){
+			writer.addStandardQuestion((StandardQuestion) q);
+		}
+		List<Question> elemQuestions = questions.getElementaryQuestions();
+		for (Question q : elemQuestions){
+			writer.addElementaryQuestion((ElementaryQuestion) q);
+		}
+		List<Question> advQuestions = questions.getAdvancedQuestions();
+		for (Question q : advQuestions){
+			writer.addAdvancedQuestion((AdvancedQuestion) q);
+		}
 		
-		
+		writer.marshal();
 	}
 
 }
