@@ -38,7 +38,11 @@ public class BookQuizTest {
 	 */
 	@Test
 	public void testBookQuiz() {
-		fail("Not yet implemented");
+		try{
+			new BookQuiz("questionz.xml");
+		} catch (QuestionException e){
+			assertEquals("Invalid File.", e.getMessage());
+		}
 	}
 
 	/**

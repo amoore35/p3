@@ -39,7 +39,11 @@ public class BookQuiz implements QuizMaster {
 	 */
 	public BookQuiz(String file) throws QuestionException{
 		//Attempts to create a QuestionReader with the file
-		this.reader = new QuestionReader(file);
+		try{
+			this.reader = new QuestionReader(file);
+		}catch (QuestionException e){
+			throw new QuestionException("Invalid File.");
+		}
 		
 		//Creates lists from the question reader of each question type
 		List<StandardQuestion> stds = reader.getStandardQuestions();
@@ -116,33 +120,33 @@ public class BookQuiz implements QuizMaster {
 			String[] questionChoices, String correctAnswer) {
 		//Check for null inputs
 		if (questionText == null || correctAnswer == null){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Cannot create question.");
 		}
 		
 		if (questionChoices == null){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Cannot create question.");
 		}
 		if (questionChoices.length != 4){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Cannot create question.");
 		}
 		for (String choice : questionChoices){
 			if (choice == null){
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException("Cannot create question.");
 			}
 		}
 		for (String choice : questionChoices){
-			choice.trim();
+			choice = choice.trim();
 			if (choice.equals("")){
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException("Cannot create question.");
 			}
 		}
 		//Trim all strings to get rid of trailing and leading whitespace
-		questionText.trim();
-		correctAnswer.trim();
+		questionText = questionText.trim();
+		correctAnswer = correctAnswer.trim();
 		
 		//Check for null or empty inputs
 		if (questionText.equals("") || correctAnswer.equals("")){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Cannot create question.");
 		}
 		
 		
@@ -169,34 +173,34 @@ public class BookQuiz implements QuizMaster {
 			String[] questionChoices, String correctAnswer, String hint) {
 		//Check for null inputs
 		if (questionText == null || correctAnswer == null || hint == null){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Cannot create question.");
 		}
 		
 		if (questionChoices == null){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Cannot create question.");
 		}
 		if (questionChoices.length != 4){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Cannot create question.");
 		}
 		for (String choice : questionChoices){
 			if (choice == null){
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException("Cannot create question.");
 			}
 		}
 		for (String choice : questionChoices){
-			choice.trim();
+			choice = choice.trim();
 			if (choice.equals("")){
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException("Cannot create question.");
 			}
 		}
 		//Trim all strings to get rid of trailing and leading whitespace
-		questionText.trim();
-		correctAnswer.trim();
-		hint.trim();
+		questionText = questionText.trim();
+		correctAnswer = correctAnswer.trim();
+		hint = hint.trim();
 		
 		//Check for null or empty inputs
 		if (questionText.equals("") || correctAnswer.equals("") || hint.equals("")){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Cannot create question.");
 		}
 		
 		
@@ -226,35 +230,35 @@ public class BookQuiz implements QuizMaster {
 		
 		//Check for null inputs
 		if (questionText == null || correctAnswer == null || comment == null){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Cannot create question.");
 		}
 		//Trim all strings to get rid of trailing and leading whitespace
-		questionText.trim();
+		questionText = questionText.trim();
 		if (questionChoices == null){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Cannot create question.");
 		}
 		if (questionChoices.length != 4){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Cannot create question.");
 		}
 		for (int i = 0; i < questionChoices.length; i++){
 			if (questionChoices[i] == null){
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException("Cannot create question.");
 			}
 		}
 		for (String choice : questionChoices){
-			choice.trim();
+			choice = choice.trim();
 			if (choice.equals("")){
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException("Cannot create question.");
 			}
 		}
 		
 		
-		correctAnswer.trim();
-		comment.trim();
+		correctAnswer = correctAnswer.trim();
+		comment = comment.trim();
 		
 		//Check for empty inputs
 		if (questionText.equals("") || correctAnswer.equals("") || comment.equals("")){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Cannot create question.");
 		}
 		
 		
@@ -277,7 +281,11 @@ public class BookQuiz implements QuizMaster {
 	 * given file
 	 */
 	public void writeQuestions(String questionFile) throws QuestionException {
-		this.writer = new QuestionWriter(questionFile);
+		try{
+			this.writer = new QuestionWriter(questionFile);
+		} catch (QuestionException e){
+			throw new QuestionException("Unable to write to file.");
+		}
 		List<Question> stdQuestions = questions.getStandardQuestions();
 		for (Question q : stdQuestions){
 			writer.addStandardQuestion((StandardQuestion) q);
