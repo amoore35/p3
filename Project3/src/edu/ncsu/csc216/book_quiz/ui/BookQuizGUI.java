@@ -6,7 +6,11 @@ package edu.ncsu.csc216.book_quiz.ui;
 import edu.ncsu.csc216.book_quiz.quiz.BookQuiz;
 import edu.ncsu.csc216.book_quiz.quiz.QuizMaster;
 import edu.ncsu.csc216.book_quiz.util.EmptyQuestionListException;
+import edu.ncsu.csc216.question_library.AdvancedQuestion;
+import edu.ncsu.csc216.question_library.ElementaryQuestion;
+import edu.ncsu.csc216.question_library.Question;
 import edu.ncsu.csc216.question_library.QuestionException;
+import edu.ncsu.csc216.question_library.StandardQuestion;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -76,6 +80,7 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 	private JLabel lblChoiceD = new JLabel("Choice D:");
 	private JLabel lblAnswer = new JLabel("Answer:");
 	private JLabel lblComment = new JLabel();
+	private JLabel lblQuizQ = new JLabel();
 	
 	//Text fields
 	private JTextField txtQ = new JTextField(FIELD_WIDTH);
@@ -122,7 +127,7 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 			}
 			initializeUI();
 			this.setVisible(true);
-		} catch (IllegalArgumentException e){
+		} catch (Exception e){
 			JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), ERROR, JOptionPane.ERROR_MESSAGE);
 		}
 	} 
@@ -138,6 +143,53 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 			invalidate();
 			validate();
 		}
+
+		JTextField choiceA = null;
+		JTextField choiceB = null;
+		JTextField choiceC = null;
+		JTextField choiceD = null;
+		JTextField question = null;
+		String answer = null;
+		String questionType = "StandardQuestion";
+		if (ae.getSource().equals(txtChoiceA)){
+			choiceA = (JTextField)ae.getSource();
+		}
+		if (ae.getSource().equals(txtChoiceB)){
+			choiceB = (JTextField)ae.getSource();
+		}
+		if (ae.getSource().equals(txtChoiceC)){
+			choiceC = (JTextField)ae.getSource();
+		}
+		if (ae.getSource().equals(txtChoiceD)){
+			choiceD = (JTextField)ae.getSource();
+		}
+		if (ae.getSource().equals(txtQ)){
+			question = (JTextField)ae.getSource();
+		}
+		if (ae.getSource().equals(cmbAnswerChoices)){
+			answer = ae.getSource().toString();
+		}
+		if (ae.getSource().equals(cmbQuestionType)){
+			String type = ae.getSource().toString();
+			if (type.equals("Standard Question")){
+				questionType = "StandardQuestion";
+			}
+			if (type.equals("Elementary Question")){
+				questionType = "ElementaryQuestion";
+			}
+			if (type.equals("Advanced Question")){
+				questionType = "AdvancedQuestion";
+			}
+		}
+		if (ae.getSource().equals(btnAdd)){
+			if (questionType.equals("StandardQuestion")){
+				String[] choices = {choiceA.getText(), choiceB.getText(), choiceC.getText(), choiceD.getText()};
+				quizMaster.addStandardQuestion(question.getText(), choices, answer);
+			}
+		}
+
+			
+
 		
 		//Quit button
 		if (ae.getSource().equals(btnQuit)){
@@ -155,6 +207,36 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 			setContentPane(pnlQuizPage);
 			invalidate();
 			validate();
+		}
+		
+		String quizAnswer = "";
+		if (btn1.isSelected()){
+			quizAnswer = "a";
+		}
+		if (btn2.isSelected()){
+			quizAnswer = "b";
+		}
+		if (btn3.isSelected()){
+			quizAnswer = "c";
+		}
+		if (btn4.isSelected()){
+			quizAnswer = "d";
+		}
+		if (ae.getSource().equals(btnSubmit)){
+			processAnswer(quizAnswer);
+		}
+		
+		if (ae.getSource().equals(btnNext)){
+			loadQuiz();
+		}
+		
+		if (ae.getSource().equals(btnDone2)){
+			String message = "You answered " + quizMaster.getNumCorrectQuestions() +
+					" questions correctly out of " + quizMaster.getNumAttemptedQuestions() + " attempts.";
+			JOptionPane.showMessageDialog(new JFrame(), message, "Message", JOptionPane.INFORMATION_MESSAGE);
+				setContentPane(pnlMainPage);
+				invalidate();
+				validate();
 		}
 	
 	}
@@ -199,6 +281,17 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		btnOk.addActionListener(this);
 		btnSubmit.addActionListener(this);
 		btnWrite.addActionListener(this);
+		txtChoiceA.addActionListener(this);
+		txtChoiceB.addActionListener(this);
+		txtChoiceC.addActionListener(this);
+		txtChoiceD.addActionListener(this);
+		txtQ.addActionListener(this);
+		cmbAnswerChoices.addActionListener(this);
+		cmbQuestionType.addActionListener(this);
+		btn1.addActionListener(this);
+		btn2.addActionListener(this);
+		btn3.addActionListener(this);
+		btn4.addActionListener(this);
 		
 		
 	}
@@ -239,7 +332,8 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 
 		
 		//Set up quiz page panels
-		pnlQuizQAndAs.add(new JLabel(quizMaster.getCurrentQuestionText()));
+		lblQuizQ.setText(quizMaster.getCurrentQuestionText());
+		pnlQuizQAndAs.add(lblQuizQ);
 		String[] btns = quizMaster.getCurrentQuestionChoices();
 		btn1.setText(btns[0]);
 		btn2.setText(btns[1]);
@@ -253,13 +347,49 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		pnlQuizQAndAs.add(btn2);
 		pnlQuizQAndAs.add(btn3);
 		pnlQuizQAndAs.add(btn4);
+		pnlQuizQAndAs.add(lblComment);
 		pnlQuizPage.add(pnlQuizQAndAs, BorderLayout.CENTER);
 		pnlQuizPgBottom.add(btnSubmit);
 		pnlQuizPgBottom.add(btnNext);
 		pnlQuizPgBottom.add(btnDone2);
 		pnlQuizPgBottom.add(btnQuit3);
 		pnlQuizPage.add(pnlQuizPgBottom, BorderLayout.SOUTH);
+		btn1.setSelected(true);
 		
+	}
+	
+	private void loadQuiz() {
+		String[] choices = null;
+		try{
+			lblQuizQ.setText(quizMaster.getCurrentQuestionText());
+			choices = quizMaster.getCurrentQuestionChoices();
+		} catch (EmptyQuestionListException e){
+			
+		}
+		
+		btn1.setText(choices[0]);
+		btn2.setText(choices[1]);
+		btn3.setText(choices[2]);
+		btn4.setText(choices[3]);
+		btn1.setSelected(true);
+		lblComment.setText("");
+		setContentPane(pnlQuizPage);
+		invalidate();
+		validate();
+		btnSubmit.setEnabled(true);
+		
+	}
+	
+	private void processAnswer(String answer){
+		try{
+			lblComment.setText(quizMaster.processAnswer(answer));
+		} catch (EmptyQuestionListException e){
+			
+		}
+		setContentPane(pnlQuizPage);
+		invalidate();
+		validate();
+		btnSubmit.setEnabled(false);
 	}
 	
 	/**
