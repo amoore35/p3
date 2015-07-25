@@ -121,7 +121,7 @@ public class BookQuiz implements QuizMaster {
 		
 		
 		for (String choice : questionChoices){
-			if (choice.equals(null)){
+			if (choice == null){
 				throw new IllegalArgumentException();
 			}
 		}
@@ -163,12 +163,12 @@ public class BookQuiz implements QuizMaster {
 	public void addElementaryQuestion(String questionText,
 			String[] questionChoices, String correctAnswer, String hint) {
 		//Check for null inputs
-		if (questionText.equals(null) || correctAnswer.equals(null) || hint.equals(null)){
+		if (questionText == null || correctAnswer == null || hint == null){
 			throw new IllegalArgumentException();
 		}
 		
 		for (String choice : questionChoices){
-			if (choice.equals(null)){
+			if (choice == null){
 				throw new IllegalArgumentException();
 			}
 		}
@@ -214,13 +214,13 @@ public class BookQuiz implements QuizMaster {
 			String[] questionChoices, String correctAnswer, String comment) {
 		
 		//Check for null inputs
-		if (questionText.equals(null) || correctAnswer.equals(null) || comment.equals(null)){
+		if (questionText == null || correctAnswer == null || comment == null){
 			throw new IllegalArgumentException();
 		}
 		//Trim all strings to get rid of trailing and leading whitespace
 		questionText.trim();
 		for (String choice : questionChoices){
-			if (choice.equals(null)){
+			if (choice == null){
 				throw new IllegalArgumentException();
 			}
 		}
