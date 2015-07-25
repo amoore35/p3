@@ -5,6 +5,7 @@ package edu.ncsu.csc216.book_quiz.question;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -156,6 +157,30 @@ public class BookQuestionsTest {
 		} catch (EmptyQuestionListException e){
 			assertEquals("No more questions to ask.", e.getMessage());
 		}
+		
+		
+		
+		StandardQuestion oneQ = new StandardQuestion();
+		oneQ.setAnswer("A");
+		oneQ.setChoiceA("A");
+		oneQ.setChoiceB("B");
+		oneQ.setChoiceC("C");
+		oneQ.setChoiceD("D");
+		oneQ.setQuestion("Question");
+		List<StandardQuestion> stand1Q = new ArrayList<StandardQuestion>();
+		stand1Q.add(oneQ);
+		List<ElementaryQuestion> emptyElems = new ArrayList<ElementaryQuestion>();
+		List<AdvancedQuestion> emptyAdvs = new ArrayList<AdvancedQuestion>();
+		BookQuestions questions3 = new BookQuestions(stand1Q, emptyElems, emptyAdvs);
+		assertEquals("Question", questions3.getCurrentQuestionText());
+		questions3.processAnswer("wrong");
+		
+		try{
+			questions3.getCurrentQuestionText();
+		} catch (EmptyQuestionListException e){
+			assertEquals("No more questions to ask.", e.getMessage());
+		}
+		
 
 	}
 

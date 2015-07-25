@@ -45,7 +45,7 @@ public abstract class QuestionState {
 	 */
 	public QuestionState(List<Question> questions){
 		waitingQuestions = new ArrayList<Question>();
-		currentQuestion = new Question();
+		currentQuestion = null;
 		askedQuestions = new ArrayList<Question>();
 		
 		waitingQuestions.addAll(questions);
@@ -139,12 +139,11 @@ public abstract class QuestionState {
 	 * askedQuestions list.
 	 */
 	public void nextQuestion(){
-		Question curr = waitingQuestions.remove(FRONT);
 		if (!this.hasMoreQuestions()){
 			currentQuestion = null;
 		}
 		else{
-			currentQuestion = curr;
+			currentQuestion = waitingQuestions.remove(FRONT);
 			askedQuestions.add(currentQuestion);
 		}
 	}
