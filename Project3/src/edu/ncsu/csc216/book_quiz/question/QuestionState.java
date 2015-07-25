@@ -49,8 +49,11 @@ public abstract class QuestionState {
 		askedQuestions = new ArrayList<Question>();
 		
 		waitingQuestions.addAll(questions);
-		currentQuestion = waitingQuestions.remove(0);
-		askedQuestions.add(currentQuestion);
+		if (waitingQuestions.size() > 0){
+			currentQuestion = waitingQuestions.remove(0);
+			askedQuestions.add(currentQuestion);
+		}
+		
 	}
 	
 	/**
