@@ -90,7 +90,7 @@ public abstract class QuestionState {
 	 */
 	public String getCurrentQuestionText() throws EmptyQuestionListException{
 		if (currentQuestion == null){
-			throw new EmptyQuestionListException();
+			throw new EmptyQuestionListException("No more questions in list.");
 		}
 		return currentQuestion.getQuestion();
 	}
@@ -116,7 +116,7 @@ public abstract class QuestionState {
 	 */
 	public String getCurrentQuestionAnswer() throws EmptyQuestionListException{
 		if (currentQuestion == null){
-			throw new EmptyQuestionListException();
+			throw new EmptyQuestionListException("No more questions in list.");
 		}
 		return currentQuestion.getAnswer();
 	}
@@ -128,7 +128,7 @@ public abstract class QuestionState {
 	 */
 	public Question getCurrentQuestion() throws EmptyQuestionListException{
 		if (currentQuestion == null){
-			throw new EmptyQuestionListException();
+			throw new EmptyQuestionListException("No more questions in list.");
 		}
 		return currentQuestion;
 	}

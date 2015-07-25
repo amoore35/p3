@@ -374,6 +374,23 @@ public class BookQuizTest {
 	public void testAddStandardQuestion() throws QuestionException, EmptyQuestionListException{
 
 		String[] choices = {"A", "B", "C", "D"};
+		
+		try{
+			quiz.addStandardQuestion(null, choices, "A");
+		} catch (IllegalArgumentException e){
+			assertEquals("Cannot create question.", e.getMessage());
+		}
+		try{
+			quiz.addStandardQuestion("Q", null, "A");
+		} catch (IllegalArgumentException e){
+			assertEquals("Cannot create question.", e.getMessage());
+		}
+		try{
+			quiz.addStandardQuestion("Q", choices, null);
+		} catch (IllegalArgumentException e){
+			assertEquals("Cannot create question.", e.getMessage());
+		}
+		
 		quiz.addStandardQuestion("Q1", choices, "A");
 		
 		quiz.writeQuestions("questions1 copy.xml");
@@ -395,6 +412,30 @@ public class BookQuizTest {
 	@Test
 	public void testAddElementaryQuestion() throws QuestionException {
 		String[] choices = {"A", "B", "C", "D"};
+		
+		try{
+			quiz.addElementaryQuestion(null, choices, "A", "hint");
+		} catch (IllegalArgumentException e){
+			assertEquals("Cannot create question.", e.getMessage());
+		}
+		try{
+			quiz.addElementaryQuestion("Q", null, "A", "hint");
+		} catch (IllegalArgumentException e){
+			assertEquals("Cannot create question.", e.getMessage());
+		}
+		try{
+			quiz.addElementaryQuestion("Q", choices, null, "hint");
+		} catch (IllegalArgumentException e){
+			assertEquals("Cannot create question.", e.getMessage());
+		}
+		try{
+			quiz.addElementaryQuestion("Q", choices, "A", null);
+		} catch (IllegalArgumentException e){
+			assertEquals("Cannot create question.", e.getMessage());
+		}
+		
+		
+		
 		quiz.addElementaryQuestion("Q1", choices, "B", "Hint");
 
 		quiz.writeQuestions("questions1 copy.xml");
@@ -416,6 +457,28 @@ public class BookQuizTest {
 	@Test
 	public void testAddAdvancedQuestion() throws QuestionException {
 		String[] choices = {"A", "B", "C", "D"};
+		try{
+			quiz.addAdvancedQuestion(null, choices, "A", "comment");
+		} catch (IllegalArgumentException e){
+			assertEquals("Cannot create question.", e.getMessage());
+		}
+		try{
+			quiz.addAdvancedQuestion("q", null, "A", "comment");
+		} catch (IllegalArgumentException e){
+			assertEquals("Cannot create question.", e.getMessage());
+		}
+		try{
+			quiz.addAdvancedQuestion("q", choices, null, "comment");
+		} catch (IllegalArgumentException e){
+			assertEquals("Cannot create question.", e.getMessage());
+		}
+		try{
+			quiz.addAdvancedQuestion("q", choices, "A", null);
+		} catch (IllegalArgumentException e){
+			assertEquals("Cannot create question.", e.getMessage());
+		}
+		
+		
 		quiz.addAdvancedQuestion("Q1", choices, "C", "Comment");
 
 		quiz.writeQuestions("questions1 copy.xml");

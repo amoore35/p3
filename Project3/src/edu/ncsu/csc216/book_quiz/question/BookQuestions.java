@@ -240,6 +240,11 @@ public class BookQuestions {
 	 * @throws EmptyQuestionListException if the list is empty
 	 */
 	public String getCurrentQuestionText() throws EmptyQuestionListException{
+		try{
+			state.getCurrentQuestionText();
+		} catch (EmptyQuestionListException e){
+			throw new EmptyQuestionListException(e.getMessage());
+		}
 		return state.getCurrentQuestionText();
 	}
 	
@@ -249,7 +254,11 @@ public class BookQuestions {
 	 * @throws EmptyQuestionListException if the list is empty
 	 */
 	public String[] getCurrentQuestionChoices() throws EmptyQuestionListException{
-
+		try{
+			state.getCurrentQuestion();
+		} catch (EmptyQuestionListException e){
+			throw new EmptyQuestionListException();
+		}
 		return state.getCurrentQuestionChoices();
 		
 	}
@@ -263,6 +272,11 @@ public class BookQuestions {
 	 * @throws EmptyQuestionListException if the answer cannot be processed
 	 */
 	public String processAnswer(String answer) throws EmptyQuestionListException{
+		try{
+			state.getCurrentQuestionAnswer();
+		} catch (EmptyQuestionListException e){
+			throw new EmptyQuestionListException("No more questions to ask.");
+		}
 		return state.processAnswer(answer);
 	}
 	

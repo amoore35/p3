@@ -120,6 +120,7 @@ public class BookQuestionsTest {
 		assertFalse(questions.hasMoreQuestions());
 		
 		
+		
 		//The following questions use the same XML file
 		
 		//Answer standard question incorrectly
@@ -156,7 +157,12 @@ public class BookQuestionsTest {
 		try{
 			questions2.getCurrentQuestionChoices();
 		} catch (EmptyQuestionListException e){
-			assertEquals("No more questions to ask.", e.getMessage());
+			assertEquals("No more questions in list.", e.getMessage());
+		}
+		try{
+			questions2.getCurrentQuestionText();
+		} catch (EmptyQuestionListException e){
+			assertEquals("No more questions in list.", e.getMessage());
 		}
 		
 		
@@ -176,11 +182,6 @@ public class BookQuestionsTest {
 		assertEquals("Question", questions3.getCurrentQuestionText());
 		questions3.processAnswer("wrong");
 		
-		try{
-			questions3.getCurrentQuestionText();
-		} catch (EmptyQuestionListException e){
-			assertEquals("No more questions to ask.", e.getMessage());
-		}
 		
 		assertFalse(questions2.hasMoreQuestions());
 		questions2.addStandardQuestion(oneQ);
