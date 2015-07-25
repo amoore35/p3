@@ -219,8 +219,8 @@ public class BookQuiz implements QuizMaster {
 		}
 		//Trim all strings to get rid of trailing and leading whitespace
 		questionText.trim();
-		for (String choice : questionChoices){
-			if (choice == null){
+		for (int i = 0; i < questionChoices.length; i++){
+			if (questionChoices[i] == null){
 				throw new IllegalArgumentException();
 			}
 		}
