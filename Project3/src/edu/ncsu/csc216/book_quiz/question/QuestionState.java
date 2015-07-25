@@ -73,7 +73,10 @@ public abstract class QuestionState {
 	 * @return true if there are more questions, false otherwise
 	 */
 	public boolean hasMoreQuestions(){
-		if (currentQuestion == null && waitingQuestions.isEmpty()){
+		if (currentQuestion == null){
+			return false;
+		}
+		if (waitingQuestions.isEmpty()){
 			return false;
 		}
 		return true;
@@ -153,7 +156,7 @@ public abstract class QuestionState {
 	 */
 	public void addQuestion(Question question){
 		waitingQuestions.add(question);
-		if (currentQuestion == null){
+		if (!hasMoreQuestions()){
 			nextQuestion();
 		}
 		
