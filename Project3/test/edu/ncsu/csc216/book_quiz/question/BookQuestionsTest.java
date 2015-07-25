@@ -145,6 +145,7 @@ public class BookQuestionsTest {
 		//Assert that there are no more standard questions to transition to
 		assertFalse(questions2.hasMoreQuestions());
 		
+		
 		//Attempt to process an answer when there are no more questions
 		try{
 			questions2.processAnswer("a");
@@ -181,6 +182,11 @@ public class BookQuestionsTest {
 			assertEquals("No more questions to ask.", e.getMessage());
 		}
 		
+		assertFalse(questions2.hasMoreQuestions());
+		questions2.addStandardQuestion(oneQ);
+		assertTrue(questions2.hasMoreQuestions());
+		
+
 
 	}
 
