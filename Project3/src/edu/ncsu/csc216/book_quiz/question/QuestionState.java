@@ -139,11 +139,12 @@ public abstract class QuestionState {
 	 * askedQuestions list.
 	 */
 	public void nextQuestion(){
+		Question curr = waitingQuestions.remove(FRONT);
 		if (!this.hasMoreQuestions()){
 			currentQuestion = null;
 		}
 		else{
-			currentQuestion = waitingQuestions.remove(FRONT);
+			currentQuestion = curr;
 			askedQuestions.add(currentQuestion);
 		}
 	}

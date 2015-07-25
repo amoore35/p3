@@ -249,6 +249,7 @@ public class BookQuestions {
 	 * @throws EmptyQuestionListException if the list is empty
 	 */
 	public String[] getCurrentQuestionChoices() throws EmptyQuestionListException{
+
 		return state.getCurrentQuestionChoices();
 		
 	}

@@ -150,6 +150,12 @@ public class BookQuestionsTest {
 		} catch (EmptyQuestionListException e){
 			assertEquals("No more questions to ask.", e.getMessage());
 		}
+		
+		try{
+			questions2.getCurrentQuestionChoices();
+		} catch (EmptyQuestionListException e){
+			assertEquals("No more questions to ask.", e.getMessage());
+		}
 
 	}
 
