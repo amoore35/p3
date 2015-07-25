@@ -119,7 +119,9 @@ public class BookQuiz implements QuizMaster {
 			throw new IllegalArgumentException();
 		}
 		
-		
+		if (questionChoices == null){
+			throw new IllegalArgumentException();
+		}
 		for (String choice : questionChoices){
 			if (choice == null){
 				throw new IllegalArgumentException();
@@ -167,6 +169,9 @@ public class BookQuiz implements QuizMaster {
 			throw new IllegalArgumentException();
 		}
 		
+		if (questionChoices == null){
+			throw new IllegalArgumentException();
+		}
 		for (String choice : questionChoices){
 			if (choice == null){
 				throw new IllegalArgumentException();
@@ -219,6 +224,9 @@ public class BookQuiz implements QuizMaster {
 		}
 		//Trim all strings to get rid of trailing and leading whitespace
 		questionText.trim();
+		if (questionChoices == null){
+			throw new IllegalArgumentException();
+		}
 		for (int i = 0; i < questionChoices.length; i++){
 			if (questionChoices[i] == null){
 				throw new IllegalArgumentException();
