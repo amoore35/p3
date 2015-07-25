@@ -79,6 +79,8 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 	private JLabel lblChoiceC = new JLabel("Choice C:");
 	private JLabel lblChoiceD = new JLabel("Choice D:");
 	private JLabel lblAnswer = new JLabel("Answer:");
+	private JLabel lblCommentOrHint = new JLabel();
+	private JLabel lblBlankSpace = new JLabel();
 	private JLabel lblComment = new JLabel();
 	private JLabel lblQuizQ = new JLabel();
 	
@@ -88,17 +90,16 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 	private JTextField txtChoiceB = new JTextField(FIELD_WIDTH);
 	private JTextField txtChoiceC = new JTextField(FIELD_WIDTH);
 	private JTextField txtChoiceD = new JTextField(FIELD_WIDTH);
+	private JTextField txtHintOrComment = new JTextField(FIELD_WIDTH);
 	
 	//Organizational and alignment boxes and panels
 	private JPanel pnlMainPage = new JPanel(new FlowLayout());
-	private JPanel pnlAddQFull = new JPanel(new BorderLayout());
-	private JPanel pnlAddPage = new JPanel(new GridLayout(8, 2));
+	private JPanel pnlAddPage = new JPanel(new GridLayout(9, 2));
 	private JPanel pnlQuizPage = new JPanel(new BorderLayout());
 	private JPanel pnlQuizQAndAs = new JPanel(new GridLayout(6, 1));
 	private JPanel pnlAddWriteBtns = new JPanel(new FlowLayout());
 	private JPanel pnlDoneQuitBtns = new JPanel(new FlowLayout());
 	private JPanel pnlQuizPgBottom = new JPanel(new FlowLayout());
-	private JPanel bottom = new JPanel(new GridLayout(1, 2));
 	
 	
 	
@@ -130,6 +131,7 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		} catch (Exception e){
 			JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), ERROR, JOptionPane.ERROR_MESSAGE);
 		}
+
 	} 
 	
 	/**
@@ -139,66 +141,116 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent ae){
 		//Add questions button
 		if (ae.getSource().equals(btnAddQs)){
-			setContentPane(pnlAddQFull);
+			setContentPane(pnlAddPage);
 			invalidate();
 			validate();
 		}
 
-		JTextField choiceA = null;
-		JTextField choiceB = null;
-		JTextField choiceC = null;
-		JTextField choiceD = null;
-		JTextField question = null;
-		String answer = null;
-		String questionType = "StandardQuestion";
-		if (ae.getSource().equals(txtChoiceA)){
-			choiceA = (JTextField)ae.getSource();
-		}
-		if (ae.getSource().equals(txtChoiceB)){
-			choiceB = (JTextField)ae.getSource();
-		}
-		if (ae.getSource().equals(txtChoiceC)){
-			choiceC = (JTextField)ae.getSource();
-		}
-		if (ae.getSource().equals(txtChoiceD)){
-			choiceD = (JTextField)ae.getSource();
-		}
-		if (ae.getSource().equals(txtQ)){
-			question = (JTextField)ae.getSource();
-		}
-		if (ae.getSource().equals(cmbAnswerChoices)){
-			answer = ae.getSource().toString();
-		}
-		if (ae.getSource().equals(cmbQuestionType)){
-			String type = ae.getSource().toString();
-			if (type.equals("Standard Question")){
-				questionType = "StandardQuestion";
-			}
-			if (type.equals("Elementary Question")){
-				questionType = "ElementaryQuestion";
-			}
-			if (type.equals("Advanced Question")){
-				questionType = "AdvancedQuestion";
-			}
-		}
-		if (ae.getSource().equals(btnAdd)){
-			if (questionType.equals("StandardQuestion")){
-				String[] choices = {choiceA.getText(), choiceB.getText(), choiceC.getText(), choiceD.getText()};
-				quizMaster.addStandardQuestion(question.getText(), choices, answer);
-			}
-		}
-
-			
-
 		
-		//Quit button
+		String userQ = "";
+		String userA = "";
+		String userB = "";
+		String userC = "";
+		String userD = "";
+		String userAns = "";
+		
+		int qType = 1;
+		if (cmbQuestionType.getSelectedIndex() == 0){
+			qType = 0;
+			lblCommentOrHint.setText("Hint:");
+			pnlAddPage.remove(15);
+			pnlAddPage.add(txtHintOrComment, 15);
+			pnlAddPage.updateUI();
+		}
+		if (cmbQuestionType.getSelectedIndex() == 1){
+			qType = 1;
+			lblCommentOrHint.setText("");
+			pnlAddPage.remove(15);
+			pnlAddPage.add(lblBlankSpace, 15);
+			pnlAddPage.updateUI();
+		}
+		if (cmbQuestionType.getSelectedIndex() == 2){
+			qType = 2;
+			lblCommentOrHint.setText("Comment:");
+			pnlAddPage.remove(15);
+			pnlAddPage.add(txtHintOrComment, 15);
+			pnlAddPage.updateUI();
+		}
+		
+		if (cmbAnswerChoices.getSelectedIndex() == 0){
+			userAns = "a";
+		}
+		if (cmbAnswerChoices.getSelectedIndex() == 1){
+			userAns = "b";
+		}
+		if (cmbAnswerChoices.getSelectedIndex() == 2){
+			userAns = "c";
+		}
+		if (cmbAnswerChoices.getSelectedIndex() == 3){
+			userAns = "d";
+		}
+		
+		userA = txtChoiceA.getText();
+		userB = txtChoiceB.getText();
+		userC = txtChoiceC.getText();
+		userD = txtChoiceD.getText();
+		userQ = txtQ.getText();
+		String[] choices = {userA, userB, userC, userD};
+		
+		if (ae.getSource().equals(btnAdd)){
+			try{
+				if (qType == 0){
+					quizMaster.addElementaryQuestion(userQ, choices, userAns, txtHintOrComment.getText());
+					reloadAddPg();
+				}
+				if (qType == 1){
+					quizMaster.addStandardQuestion(userQ, choices, userAns);
+					reloadAddPg();
+				}
+				if (qType == 2){
+					quizMaster.addAdvancedQuestion(userQ, choices, userAns, txtHintOrComment.getText());
+					reloadAddPg();
+				}
+			} catch(IllegalArgumentException e){
+				JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
+		if (ae.getSource().equals(btnDone)){
+			int response = JOptionPane.showConfirmDialog(new JFrame(), "Would you like to write the questions to a file?");
+				if (response == JOptionPane.YES_OPTION){
+					writeToFile();
+				}
+				if (response == JOptionPane.NO_OPTION){
+					setContentPane(pnlMainPage);
+					invalidate();
+					validate();
+				}
+		}
+		
+		if (ae.getSource().equals(btnWrite)){
+			writeToFile();
+		}
+		
+		if (ae.getSource().equals(btnQuit2)){
+			int response = JOptionPane.showConfirmDialog(new JFrame(), "Would you like to write the questions to a file?");
+			if (response == JOptionPane.YES_OPTION){
+				writeToFile();
+			}
+			if (response == JOptionPane.NO_OPTION){
+				stopExecution();
+			}
+		}
+
+
 		if (ae.getSource().equals(btnQuit)){
 			stopExecution();
 		}
-		if (ae.getSource().equals(btnQuit2)){
-			stopExecution();
-		}
+
 		if (ae.getSource().equals(btnQuit3)){
+			String message = "You answered " + quizMaster.getNumCorrectQuestions() +
+					" questions correctly out of " + quizMaster.getNumAttemptedQuestions() + " attempts.";
+			JOptionPane.showMessageDialog(new JFrame(), message, "Message", JOptionPane.INFORMATION_MESSAGE);
 			stopExecution();
 		}
 		
@@ -234,9 +286,9 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 			String message = "You answered " + quizMaster.getNumCorrectQuestions() +
 					" questions correctly out of " + quizMaster.getNumAttemptedQuestions() + " attempts.";
 			JOptionPane.showMessageDialog(new JFrame(), message, "Message", JOptionPane.INFORMATION_MESSAGE);
-				setContentPane(pnlMainPage);
-				invalidate();
-				validate();
+			setContentPane(pnlMainPage);
+			invalidate();
+			validate();
 		}
 	
 	}
@@ -307,6 +359,7 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		pnlMainPage.add(btnQuit);
 		
 		//Set up add page panels
+		cmbQuestionType.setSelectedIndex(1);
 		pnlAddPage.add(lblQuestionType);
 		pnlAddPage.add(cmbQuestionType);
 		pnlAddPage.add(lblQuestion);
@@ -321,14 +374,14 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		pnlAddPage.add(txtChoiceD);
 		pnlAddPage.add(lblAnswer);
 		pnlAddPage.add(cmbAnswerChoices);
+		pnlAddPage.add(lblCommentOrHint);
+		pnlAddPage.add(lblBlankSpace);
 		pnlAddWriteBtns.add(btnAdd);
 		pnlAddWriteBtns.add(btnWrite);
 		pnlDoneQuitBtns.add(btnDone);
 		pnlDoneQuitBtns.add(btnQuit2);
-		pnlAddQFull.add(pnlAddPage, BorderLayout.CENTER);
-		bottom.add(pnlAddWriteBtns);
-		bottom.add(pnlDoneQuitBtns);
-		pnlAddQFull.add(bottom, BorderLayout.SOUTH);
+		pnlAddPage.add(pnlAddWriteBtns);
+		pnlAddPage.add(pnlDoneQuitBtns);
 
 		
 		//Set up quiz page panels
@@ -364,20 +417,57 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 			lblQuizQ.setText(quizMaster.getCurrentQuestionText());
 			choices = quizMaster.getCurrentQuestionChoices();
 		} catch (EmptyQuestionListException e){
-			
+			String message = "You answered " + quizMaster.getNumCorrectQuestions() +
+					" questions correctly out of " + quizMaster.getNumAttemptedQuestions() + " attempts.";
+			JOptionPane.showMessageDialog(new JFrame(), message, "Message", JOptionPane.INFORMATION_MESSAGE);
+			setContentPane(pnlMainPage);
+			invalidate();
+			validate();
+		}
+		if (choices != null){
+			btn1.setText(choices[0]);
+			btn2.setText(choices[1]);
+			btn3.setText(choices[2]);
+			btn4.setText(choices[3]);
+			btn1.setSelected(true);
+			lblComment.setText("");
+			setContentPane(pnlQuizPage);
+			invalidate();
+			validate();
+			btnSubmit.setEnabled(true);
 		}
 		
-		btn1.setText(choices[0]);
-		btn2.setText(choices[1]);
-		btn3.setText(choices[2]);
-		btn4.setText(choices[3]);
-		btn1.setSelected(true);
-		lblComment.setText("");
-		setContentPane(pnlQuizPage);
-		invalidate();
-		validate();
-		btnSubmit.setEnabled(true);
-		
+	}
+	
+	private void writeToFile(){
+		try{
+			String userPickFilename = null;
+			JFileChooser fc = new JFileChooser(".");
+			fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+			int returnVal = fc.showOpenDialog(this);
+			if (returnVal == JFileChooser.APPROVE_OPTION){
+				userPickFilename = fc.getSelectedFile().getName();
+				quizMaster.writeQuestions(userPickFilename);
+			}
+			if (returnVal == JFileChooser.CANCEL_OPTION){
+				setContentPane(pnlAddPage);
+				invalidate();
+				validate();
+			}
+		} catch (QuestionException e){
+			JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), ERROR, JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private void reloadAddPg(){
+		txtChoiceA.setText("");
+		txtChoiceB.setText("");
+		txtChoiceC.setText("");
+		txtChoiceD.setText("");
+		txtQ.setText("");
+		txtHintOrComment.setText("");
+		cmbAnswerChoices.setSelectedIndex(0);
+		cmbQuestionType.setSelectedIndex(1);
 	}
 	
 	private void processAnswer(String answer){
