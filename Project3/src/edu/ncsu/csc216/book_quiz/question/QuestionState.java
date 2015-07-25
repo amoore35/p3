@@ -157,6 +157,7 @@ public abstract class QuestionState {
 	public void addQuestion(Question question){
 		waitingQuestions.add(question);
 		if (currentQuestion == null){
+			nextQuestion();
 			currentQuestion = question;
 		}
 		
