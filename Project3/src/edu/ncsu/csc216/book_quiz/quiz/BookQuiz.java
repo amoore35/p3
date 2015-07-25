@@ -116,7 +116,7 @@ public class BookQuiz implements QuizMaster {
 			String[] questionChoices, String correctAnswer) {
 		//Check for null inputs
 		if (questionText.equals(null) || correctAnswer.equals(null)){
-			throw new IllegalArgumentException();
+			throw new NullPointerException();
 		}
 		
 		
@@ -214,7 +214,7 @@ public class BookQuiz implements QuizMaster {
 			String[] questionChoices, String correctAnswer, String comment) {
 		
 		//Check for null inputs
-		if (questionText.equals(null) || correctAnswer.equals(null) ||comment.equals(null)){
+		if (questionText.equals(null) || correctAnswer.equals(null) || comment.equals(null)){
 			throw new IllegalArgumentException();
 		}
 		//Trim all strings to get rid of trailing and leading whitespace
