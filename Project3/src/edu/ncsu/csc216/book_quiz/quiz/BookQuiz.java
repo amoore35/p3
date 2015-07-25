@@ -114,23 +114,32 @@ public class BookQuiz implements QuizMaster {
 	 */
 	public void addStandardQuestion(String questionText,
 			String[] questionChoices, String correctAnswer) {
-		//Trim all strings to get rid of trailing and leading whitespace
-		questionText.trim();
-		for (String choice : questionChoices){
-			choice.trim();
-		}
-		correctAnswer.trim();
-		
-		//Check for null or empty inputs
-		if (questionText.equals(null) || questionText.equals("") || correctAnswer.equals(null)
-				|| correctAnswer.equals("")){
+		//Check for null inputs
+		if (questionText.equals(null) || correctAnswer.equals(null)){
 			throw new IllegalArgumentException();
 		}
+		
+		
 		for (String choice : questionChoices){
-			if (choice.equals(null) || choice.equals("")){
+			if (choice.equals(null)){
 				throw new IllegalArgumentException();
 			}
 		}
+		for (String choice : questionChoices){
+			choice.trim();
+			if (choice.equals("")){
+				throw new IllegalArgumentException();
+			}
+		}
+		//Trim all strings to get rid of trailing and leading whitespace
+		questionText.trim();
+		correctAnswer.trim();
+		
+		//Check for null or empty inputs
+		if (questionText.equals("") || correctAnswer.equals("")){
+			throw new IllegalArgumentException();
+		}
+		
 		
 		//Create new StandardQuestion and use setters
 		StandardQuestion standardQuestion = new StandardQuestion();
@@ -153,24 +162,32 @@ public class BookQuiz implements QuizMaster {
 	 */
 	public void addElementaryQuestion(String questionText,
 			String[] questionChoices, String correctAnswer, String hint) {
-		//Trim all strings to get rid of trailing and leading whitespace
-		questionText.trim();
+		//Check for null inputs
+		if (questionText.equals(null) || correctAnswer.equals(null) || hint.equals(null)){
+			throw new IllegalArgumentException();
+		}
+		
+		for (String choice : questionChoices){
+			if (choice.equals(null)){
+				throw new IllegalArgumentException();
+			}
+		}
 		for (String choice : questionChoices){
 			choice.trim();
+			if (choice.equals("")){
+				throw new IllegalArgumentException();
+			}
 		}
+		//Trim all strings to get rid of trailing and leading whitespace
+		questionText.trim();
 		correctAnswer.trim();
 		hint.trim();
 		
 		//Check for null or empty inputs
-		if (questionText.equals(null) || questionText.equals("") || correctAnswer.equals(null)
-				|| correctAnswer.equals("") || hint.equals(null) || hint.equals("")){
+		if (questionText.equals("") || correctAnswer.equals("") || hint.equals("")){
 			throw new IllegalArgumentException();
 		}
-		for (String choice : questionChoices){
-			if (choice.equals(null) || choice.equals("")){
-				throw new IllegalArgumentException();
-			}
-		}
+		
 		
 		//Create new ElementaryQuestion and use setters
 		ElementaryQuestion elementaryQuestion = new ElementaryQuestion();
@@ -195,24 +212,34 @@ public class BookQuiz implements QuizMaster {
 	 */
 	public void addAdvancedQuestion(String questionText,
 			String[] questionChoices, String correctAnswer, String comment) {
+		
+		//Check for null inputs
+		if (questionText.equals(null) || correctAnswer.equals(null) ||comment.equals(null)){
+			throw new IllegalArgumentException();
+		}
 		//Trim all strings to get rid of trailing and leading whitespace
 		questionText.trim();
 		for (String choice : questionChoices){
-			choice.trim();
-		}
-		correctAnswer.trim();
-		comment.trim();
-		
-		//Check for null or empty inputs
-		if (questionText.equals(null) || questionText.equals("") || correctAnswer.equals(null)
-				|| correctAnswer.equals("") || comment.equals(null) || comment.equals("")){
-			throw new IllegalArgumentException();
-		}
-		for (String choice : questionChoices){
-			if (choice.equals(null) || choice.equals("")){
+			if (choice.equals(null)){
 				throw new IllegalArgumentException();
 			}
 		}
+		for (String choice : questionChoices){
+			choice.trim();
+			if (choice.equals("")){
+				throw new IllegalArgumentException();
+			}
+		}
+		
+		
+		correctAnswer.trim();
+		comment.trim();
+		
+		//Check for empty inputs
+		if (questionText.equals("") || correctAnswer.equals("") || comment.equals("")){
+			throw new IllegalArgumentException();
+		}
+		
 		
 		//Create new AdvancedQuestion and use setters
 		AdvancedQuestion advancedQuestion = new AdvancedQuestion();
