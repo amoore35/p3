@@ -115,8 +115,8 @@ public class BookQuiz implements QuizMaster {
 	public void addStandardQuestion(String questionText,
 			String[] questionChoices, String correctAnswer) {
 		//Check for null inputs
-		if (questionText.equals(null) || correctAnswer.equals(null)){
-			throw new NullPointerException();
+		if (questionText == null || correctAnswer == null){
+			throw new IllegalArgumentException();
 		}
 		
 		
