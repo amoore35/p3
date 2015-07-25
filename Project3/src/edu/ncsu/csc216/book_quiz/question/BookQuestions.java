@@ -262,9 +262,6 @@ public class BookQuestions {
 	 * @throws EmptyQuestionListException if the answer cannot be processed
 	 */
 	public String processAnswer(String answer) throws EmptyQuestionListException{
-		if (!state.hasMoreQuestions()){
-			throw new EmptyQuestionListException();
-		}
 		return state.processAnswer(answer);
 	}
 	
