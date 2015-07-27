@@ -338,12 +338,12 @@ public class BookQuestionsTest {
 		elemQ.setQuestion("What is the answer to this test question?");
 		elemQ.setHint("Hint: it's not b.");
 		
-		List<Question> elemQs = questions.getElementaryQuestions();
-		assertFalse(elemQs.contains(elemQ));
+		List<Question> elemQues = questions.getElementaryQuestions();
+		assertFalse(elemQues.contains(elemQ));
 		questions.addElementaryQuestion(elemQ);
 		
-		elemQs = questions.getElementaryQuestions();
-		assertTrue(elemQs.contains(elemQ));
+		elemQues = questions.getElementaryQuestions();
+		assertTrue(elemQues.contains(elemQ));
 	}
 
 	/**
@@ -360,12 +360,12 @@ public class BookQuestionsTest {
 		advQ.setQuestion("What is the answer to this test question?");
 		advQ.setComment("Nice job.");
 		
-		List<Question> advQs = questions.getAdvancedQuestions();
-		assertFalse(advQs.contains(advQ));
+		List<Question> advanQs = questions.getAdvancedQuestions();
+		assertFalse(advanQs.contains(advQ));
 		questions.addAdvancedQuestion(advQ);
 		
-		advQs = questions.getAdvancedQuestions();
-		assertTrue(advQs.contains(advQ));
+		advanQs = questions.getAdvancedQuestions();
+		assertTrue(advanQs.contains(advQ));
 	}
 
 	/**

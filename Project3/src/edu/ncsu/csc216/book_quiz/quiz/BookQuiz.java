@@ -40,7 +40,7 @@ public class BookQuiz implements QuizMaster {
 		//Attempts to create a QuestionReader with the file
 		try{
 			this.reader = new QuestionReader(file);
-		}catch (QuestionException e){
+		} catch (QuestionException e){
 			throw new QuestionException("Invalid File.");
 		}
 		
