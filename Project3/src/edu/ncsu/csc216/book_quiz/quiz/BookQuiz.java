@@ -3,7 +3,6 @@
  */
 package edu.ncsu.csc216.book_quiz.quiz;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncsu.csc216.book_quiz.question.BookQuestions;
@@ -281,6 +280,7 @@ public class BookQuiz implements QuizMaster {
 	 * given file
 	 */
 	public void writeQuestions(String questionFile) throws QuestionException {
+		//Attempt to create QuestionWriter with given file
 		try{
 			this.writer = new QuestionWriter(questionFile);
 		} catch (QuestionException e){

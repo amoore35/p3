@@ -5,28 +5,26 @@ package edu.ncsu.csc216.book_quiz.quiz;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import edu.ncsu.csc216.book_quiz.question.BookQuestions;
 import edu.ncsu.csc216.book_quiz.util.EmptyQuestionListException;
-import edu.ncsu.csc216.question_library.ElementaryQuestion;
 import edu.ncsu.csc216.question_library.QuestionException;
 import edu.ncsu.csc216.question_library.QuestionReader;
-import edu.ncsu.csc216.question_library.StandardQuestion;
 
 /**
+ * Test class for the BookQuiz object. The file used is "questions1.xml" and can be accessed to 
  * @author AlexiaMoore
  *
  */
 public class BookQuizTest {
 	
+	/** Keeps track of a BookQuiz */
 	private BookQuiz quiz;
 
 	/**
-	 * @throws java.lang.Exception
+	 * Sets up the BookQuiz with a given file
 	 */
 	@Before
 	public void setUp() throws Exception {
@@ -34,7 +32,7 @@ public class BookQuizTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.quiz.BookQuiz#BookQuiz(java.lang.String)}.
+	 * Test to determine if the constructor returns the correct message when given an invalid file
 	 */
 	@Test
 	public void testBookQuiz() {
@@ -46,7 +44,7 @@ public class BookQuizTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.quiz.BookQuiz#hasMoreQuestions()}.
+	 * Test to determine if the hasMoreQuestions() method returns true when it should
 	 */
 	@Test
 	public void testHasMoreQuestions() {
@@ -55,8 +53,8 @@ public class BookQuizTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.quiz.BookQuiz#getCurrentQuestionText()}.
-	 * @throws EmptyQuestionListException 
+	 * Test to determine if the getCurrentQuestionText() method returns the text of the current question
+	 * @throws EmptyQuestionListException if there isn't a current question
 	 */
 	@Test
 	public void testGetCurrentQuestionText() throws EmptyQuestionListException {
@@ -70,8 +68,8 @@ public class BookQuizTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.quiz.BookQuiz#getCurrentQuestionChoices()}.
-	 * @throws EmptyQuestionListException 
+	  * Test to determine if the getCurrentQuestionChoices() method returns the choices of the current question
+	 * @throws EmptyQuestionListException if there isn't a current question
 	 */
 	@Test
 	public void testGetCurrentQuestionChoices() throws EmptyQuestionListException {
@@ -84,8 +82,8 @@ public class BookQuizTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.quiz.BookQuiz#processAnswer(java.lang.String)}.
-	 * @throws EmptyQuestionListException 
+	 * Test to determine if the processAnswer() method returns the correct response based on the given answer
+	 * @throws EmptyQuestionListException if there isn't a question to process
 	 */
 	@Test
 	public void testProcessAnswer() throws EmptyQuestionListException {
@@ -152,8 +150,8 @@ public class BookQuizTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.quiz.BookQuiz#getNumCorrectQuestions()}.
-	 * @throws EmptyQuestionListException 
+	 * Test to determine if the getNumCorrectQuestions() method returns the proper number
+	 * @throws EmptyQuestionListException if the methods inside the tester method throw the exception
 	 */
 	@Test
 	public void testGetNumCorrectQuestions() throws EmptyQuestionListException {
@@ -261,7 +259,8 @@ public class BookQuizTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.quiz.BookQuiz#getNumAttemptedQuestions()}.
+	 * Test to determine if the getNumAttemptedQuestions() method returns the correct number
+	 * @throws EmptyQuestionListException if the methods inside the tester method throw an exception
 	 */
 	@Test
 	public void testGetNumAttemptedQuestions() throws EmptyQuestionListException {
@@ -367,8 +366,9 @@ public class BookQuizTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.quiz.BookQuiz#addStandardQuestion(java.lang.String, java.lang.String[], java.lang.String)}.
-	 * @throws EmptyQuestionListException 
+	 * Test to determine if the addStandardQuestion() method adds the question to the quiz
+	 * @throws EmptyQuestionListException if the inside methods throw the exception
+	 * @throws QuestionException if the question cannot be created
 	 */
 	@Test
 	public void testAddStandardQuestion() throws QuestionException, EmptyQuestionListException{
@@ -406,8 +406,8 @@ public class BookQuizTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.quiz.BookQuiz#addElementaryQuestion(java.lang.String, java.lang.String[], java.lang.String, java.lang.String)}.
-	 * @throws QuestionException 
+	 * Test to determine if the addElementaryQuestion() method adds the question to the quiz
+	 * @throws QuestionException if the question cannot be created
 	 */
 	@Test
 	public void testAddElementaryQuestion() throws QuestionException {
@@ -451,8 +451,8 @@ public class BookQuizTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.quiz.BookQuiz#addAdvancedQuestion(java.lang.String, java.lang.String[], java.lang.String, java.lang.String)}.
-	 * @throws QuestionException 
+	 * Test to determine if the addAdvancedQuestion() method adds the question to the quiz
+	 * @throws QuestionException if the question cannot be created
 	 */
 	@Test
 	public void testAddAdvancedQuestion() throws QuestionException {
@@ -494,8 +494,8 @@ public class BookQuizTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.quiz.BookQuiz#writeQuestions(java.lang.String)}.
-	 * @throws QuestionException 
+	 * Test to determine if the writeQuestions() method writes all the questions to a given file
+	 * @throws QuestionException if the file cannot be written to
 	 */
 	@Test
 	public void testWriteQuestions() throws QuestionException {
@@ -517,8 +517,6 @@ public class BookQuizTest {
 		assertEquals(origSizeStd + 1, reader2.getStandardQuestions().size());
 		assertEquals(origSizeElem + 1, reader2.getElementaryQuestions().size());
 		assertEquals(origSizeAdv + 1, reader2.getAdvancedQuestions().size());
-		
-		
 
 	}
 

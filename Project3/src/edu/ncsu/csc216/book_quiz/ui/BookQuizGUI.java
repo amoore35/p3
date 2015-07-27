@@ -6,24 +6,24 @@ package edu.ncsu.csc216.book_quiz.ui;
 import edu.ncsu.csc216.book_quiz.quiz.BookQuiz;
 import edu.ncsu.csc216.book_quiz.quiz.QuizMaster;
 import edu.ncsu.csc216.book_quiz.util.EmptyQuestionListException;
-import edu.ncsu.csc216.question_library.AdvancedQuestion;
-import edu.ncsu.csc216.question_library.ElementaryQuestion;
-import edu.ncsu.csc216.question_library.Question;
 import edu.ncsu.csc216.question_library.QuestionException;
-import edu.ncsu.csc216.question_library.StandardQuestion;
-
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
 
 /**
- * The graphical user interface for the project.
+ * The graphical user interface for the project. 
  * @author AlexiaMoore
  *
  */
 public class BookQuizGUI extends JFrame implements ActionListener {
 	
+	/**
+	 * The generated serialVersionUID
+	 */
+	private static final long serialVersionUID = 1016940192073753500L;
+
 	//Backend model
 	private QuizMaster quizMaster;
 	
@@ -101,16 +101,17 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 	private JPanel pnlDoneQuitBtns = new JPanel(new FlowLayout());
 	private JPanel pnlQuizPgBottom = new JPanel(new FlowLayout());
 	
-	
-	
-	
 	//Main window
 	private Container mainWindow = getContentPane();
+
 	
-	
-	
-	
-	
+	/**
+	 * Constructs the BookQuizGUI from a file. Either uses the command line or a file
+	 * chooser
+	 * @param file the xml file to create the questions from
+	 * @throws QuestionException if the quiz cannot be created
+	 * @throws EmptyQuestionListException if there are no questions in the list
+	 */
 	public BookQuizGUI(String file) throws QuestionException, EmptyQuestionListException{
 		try{
 			if (file == null){
@@ -135,11 +136,11 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 	} 
 	
 	/**
-	 * 
-	 * @param ae
+	 * Handles actions performed in the GUI.
+	 * @param ae the ActionEvent to handle
 	 */
 	public void actionPerformed(ActionEvent ae){
-		//Add questions button
+		//Add questions button changes content pane to the add page
 		if (ae.getSource().equals(btnAddQs)){
 			setContentPane(pnlAddPage);
 			invalidate();
@@ -154,7 +155,9 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		String userD = "";
 		String userAns = "";
 		
+		//1 represents index 1, which is the standard question type. 
 		int qType = 1;
+		//If elementary is selected
 		if (cmbQuestionType.getSelectedIndex() == 0){
 			qType = 0;
 			lblCommentOrHint.setText("Hint:");
@@ -162,6 +165,7 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 			pnlAddPage.add(txtHintOrComment, 15);
 			pnlAddPage.updateUI();
 		}
+		//If standard is selected
 		if (cmbQuestionType.getSelectedIndex() == 1){
 			qType = 1;
 			lblCommentOrHint.setText("");
@@ -169,6 +173,7 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 			pnlAddPage.add(lblBlankSpace, 15);
 			pnlAddPage.updateUI();
 		}
+		//If advanced is selected
 		if (cmbQuestionType.getSelectedIndex() == 2){
 			qType = 2;
 			lblCommentOrHint.setText("Comment:");
@@ -177,6 +182,7 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 			pnlAddPage.updateUI();
 		}
 		
+		//Index 0 - 3 goes from a - d
 		if (cmbAnswerChoices.getSelectedIndex() == 0){
 			userAns = "a";
 		}
@@ -197,8 +203,11 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		userQ = txtQ.getText();
 		String[] choices = {userA, userB, userC, userD};
 		
+		//Add button
 		if (ae.getSource().equals(btnAdd)){
 			try{
+				//Adds the question based on the type with the user inputs
+				
 				if (qType == 0){
 					quizMaster.addElementaryQuestion(userQ, choices, userAns, txtHintOrComment.getText());
 					reloadAddPg();
@@ -216,7 +225,9 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 			}
 		}
 		
+		//Done button on add page
 		if (ae.getSource().equals(btnDone)){
+			//Prompt user to write questions to a file
 			int response = JOptionPane.showConfirmDialog(new JFrame(), "Would you like to write the questions to a file?");
 				if (response == JOptionPane.YES_OPTION){
 					writeToFile();
@@ -225,14 +236,18 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 					setContentPane(pnlMainPage);
 					invalidate();
 					validate();
+
 				}
 		}
 		
+		//Write questions button
 		if (ae.getSource().equals(btnWrite)){
 			writeToFile();
 		}
 		
+		//Quit button on add page
 		if (ae.getSource().equals(btnQuit2)){
+			//Prompt user to write to a file
 			int response = JOptionPane.showConfirmDialog(new JFrame(), "Would you like to write the questions to a file?");
 			if (response == JOptionPane.YES_OPTION){
 				writeToFile();
@@ -242,11 +257,12 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 			}
 		}
 
-
+		//Quit button main page
 		if (ae.getSource().equals(btnQuit)){
 			stopExecution();
 		}
 
+		//Quit button on quiz page
 		if (ae.getSource().equals(btnQuit3)){
 			String message = "You answered " + quizMaster.getNumCorrectQuestions() +
 					" questions correctly out of " + quizMaster.getNumAttemptedQuestions() + " attempts.";
@@ -261,6 +277,7 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 			validate();
 		}
 		
+		//Checks the given answer by the user
 		String quizAnswer = "";
 		if (btn1.isSelected()){
 			quizAnswer = "a";
@@ -274,28 +291,35 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		if (btn4.isSelected()){
 			quizAnswer = "d";
 		}
+		
+		//Submit button
 		if (ae.getSource().equals(btnSubmit)){
 			processAnswer(quizAnswer);
 		}
 		
+		//Next button
 		if (ae.getSource().equals(btnNext)){
 			loadQuiz();
 		}
 		
+		//Done button on quiz page
 		if (ae.getSource().equals(btnDone2)){
 			String message = "You answered " + quizMaster.getNumCorrectQuestions() +
 					" questions correctly out of " + quizMaster.getNumAttemptedQuestions() + " attempts.";
 			JOptionPane.showMessageDialog(new JFrame(), message, "Message", JOptionPane.INFORMATION_MESSAGE);
+			//Sets content pane back to main page
 			setContentPane(pnlMainPage);
 			invalidate();
 			validate();
+			pnlMainPage.updateUI();
+			this.toFront();
 		}
 	
 	}
 	
 	/**
 	 * Private method that creates the user interface.
-	 * @throws EmptyQuestionListException 
+	 * @throws EmptyQuestionListException if the UI cannot be created
 	 */
 	private void initializeUI() throws EmptyQuestionListException{
 		//Initialize the main frame parameters.
@@ -411,6 +435,9 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		
 	}
 	
+	/**
+	 * Private method that loads the quiz page
+	 */
 	private void loadQuiz() {
 		String[] choices = null;
 		try{
@@ -439,6 +466,9 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		
 	}
 	
+	/**
+	 * Private method that handles writing to a file
+	 */
 	private void writeToFile(){
 		try{
 			String userPickFilename = null;
@@ -448,6 +478,9 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 			if (returnVal == JFileChooser.APPROVE_OPTION){
 				userPickFilename = fc.getSelectedFile().getName();
 				quizMaster.writeQuestions(userPickFilename);
+				setContentPane(pnlMainPage);
+				invalidate();
+				validate();
 			}
 			if (returnVal == JFileChooser.CANCEL_OPTION){
 				setContentPane(pnlAddPage);
@@ -459,6 +492,9 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Private method that handles reloading the add questions page
+	 */
 	private void reloadAddPg(){
 		txtChoiceA.setText("");
 		txtChoiceB.setText("");
@@ -470,11 +506,16 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		cmbQuestionType.setSelectedIndex(1);
 	}
 	
+	/**
+	 * Handles processing the answer to a question
+	 * @param answer the answer to process
+	 */
 	private void processAnswer(String answer){
+		//Displays the comment to the user that is returned based on the answer given
 		try{
 			lblComment.setText(quizMaster.processAnswer(answer));
 		} catch (EmptyQuestionListException e){
-			
+			//This should not happen
 		}
 		setContentPane(pnlQuizPage);
 		invalidate();
@@ -492,8 +533,8 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 	/**
 	 * Starts the program.
 	 * @param args command line args
-	 * @throws QuestionException 
-	 * @throws EmptyQuestionListException 
+	 * @throws QuestionException if the program cannot be created
+	 * @throws EmptyQuestionListException if there are no questions in the list
 	 */
 	public static void main(String[] args) throws QuestionException, EmptyQuestionListException{
 		try{
@@ -511,28 +552,4 @@ public class BookQuizGUI extends JFrame implements ActionListener {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

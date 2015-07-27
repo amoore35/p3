@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package edu.ncsu.csc216.book_quiz.question;
 
 import static org.junit.Assert.*;
@@ -15,32 +13,40 @@ import edu.ncsu.csc216.book_quiz.util.EmptyQuestionListException;
 import edu.ncsu.csc216.question_library.AdvancedQuestion;
 import edu.ncsu.csc216.question_library.ElementaryQuestion;
 import edu.ncsu.csc216.question_library.Question;
-import edu.ncsu.csc216.question_library.QuestionException;
 import edu.ncsu.csc216.question_library.QuestionReader;
-import edu.ncsu.csc216.question_library.QuestionWriter;
 import edu.ncsu.csc216.question_library.StandardQuestion;
 
 /**
+ * Test for the BookQuestions class to determine if the methods return the expected results.
+ * The file "questions1.xml" can be viewed to verify where the expected results come from.
  * @author AlexiaMoore
  *
  */
 public class BookQuestionsTest {
 	
+	/** Two QuestionReaders to keep track of for different tests */
 	private QuestionReader reader;
 	private QuestionReader reader2;
+	
+	/** Two BookQuestions objects to test */
 	private BookQuestions questions;
 	private BookQuestions questions2;
+	
+	/** Lists of different types of questions to manipulate */
 	private List<AdvancedQuestion> advQs;
 	private List<ElementaryQuestion> elemQs;
 	private List<StandardQuestion> stdQs;
 	private List<AdvancedQuestion> advQs2;
 	private List<ElementaryQuestion> elemQs2;
 	private List<StandardQuestion> stdQs2;
+	
+	/** Size of the lists for the used file */
 	private static final int ELEM_SIZE = 4;
 	private static final int ADV_SIZE = 2;
 	private static final int STD_SIZE = 3;
 
 	/**
+	 * Sets up all of the data members to manipulate throughout the tests with a question file
 	 * @throws java.lang.Exception
 	 */
 	@Before
@@ -59,7 +65,7 @@ public class BookQuestionsTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.question.BookQuestions#hasMoreQuestions()}.
+	 * Test to determine if the hasMoreQuestions() method returns true when it should
 	 */
 	@Test
 	public void testHasMoreQuestions() {
@@ -69,8 +75,8 @@ public class BookQuestionsTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.question.BookQuestions#getCurrentQuestionText()}.
-	 * @throws EmptyQuestionListException 
+	 * Test to determine if the getCurrentQuestionText() method returns the text of the current question
+	 * @throws EmptyQuestionListException if there isn't a current question
 	 */
 	@Test
 	public void testGetCurrentQuestionText() throws EmptyQuestionListException {
@@ -79,8 +85,8 @@ public class BookQuestionsTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.question.BookQuestions#getCurrentQuestionChoices()}.
-	 * @throws EmptyQuestionListException 
+	 * Test to determine if the getCurrentQuestionChoices() method returns the choices of the current question
+	 * @throws EmptyQuestionListException if there isn't a current question
 	 */
 	@Test
 	public void testGetCurrentQuestionChoices() throws EmptyQuestionListException {
@@ -98,8 +104,9 @@ public class BookQuestionsTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.question.BookQuestions#processAnswer(java.lang.String)}.
-	 * @throws EmptyQuestionListException 
+	 * Test to determine if the processAnswer() method returns the correct responses based on answering questions
+	 * correctly and incorrectly.
+	 * @throws EmptyQuestionListException if there isn't a current question to process
 	 */
 	@Test
 	public void testProcessAnswer() throws EmptyQuestionListException {
@@ -186,14 +193,12 @@ public class BookQuestionsTest {
 		assertFalse(questions2.hasMoreQuestions());
 		questions2.addStandardQuestion(oneQ);
 		assertTrue(questions2.hasMoreQuestions());
-		
-
-
+	
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.question.BookQuestions#getNumCorrectQuestions()}.
-	 * @throws EmptyQuestionListException 
+	 * Test to determine if getNumCorrectQuestions() returns the number of correct questions answered
+	 * @throws EmptyQuestionListException if there isn't a current question to process for testing purposes
 	 */
 	@Test
 	public void testGetNumCorrectQuestions() throws EmptyQuestionListException {
@@ -245,8 +250,8 @@ public class BookQuestionsTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.question.BookQuestions#getNumAttemptedQuestions()}.
-	 * @throws EmptyQuestionListException 
+	 * Test to determine if the getNumAttemptedQuestion() method returns the number of attempts in the quiz
+	 * @throws EmptyQuestionListException if there isn't a current question to process for testing purposes
 	 */
 	@Test
 	public void testGetNumAttemptedQuestions() throws EmptyQuestionListException {
@@ -298,11 +303,10 @@ public class BookQuestionsTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.question.BookQuestions#addStandardQuestion(edu.ncsu.csc216.question_library.StandardQuestion)}.
-	 * @throws QuestionException 
+	 * Test to determine if the addStandardQuestion() method adds the question to the list
 	 */
 	@Test
-	public void testAddStandardQuestion() throws QuestionException {
+	public void testAddStandardQuestion() {
 		StandardQuestion stdQ = new StandardQuestion();
 		stdQ.setAnswer("a");
 		stdQ.setChoiceA("a");
@@ -321,7 +325,7 @@ public class BookQuestionsTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.question.BookQuestions#addElementaryQuestion(edu.ncsu.csc216.question_library.ElementaryQuestion)}.
+	 * Test to determine if the addElementaryQuestion() method adds the question to the list
 	 */
 	@Test
 	public void testAddElementaryQuestion() {
@@ -343,7 +347,7 @@ public class BookQuestionsTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.question.BookQuestions#addAdvancedQuestion(edu.ncsu.csc216.question_library.AdvancedQuestion)}.
+	 * Test to determine if the addAdvancedQuestion() method adds the question to the list
 	 */
 	@Test
 	public void testAddAdvancedQuestion() {
@@ -365,7 +369,7 @@ public class BookQuestionsTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.question.BookQuestions#getStandardQuestions()}.
+	 * Test to determine if the getStandardQuestions() method returns all the standard questions
 	 */
 	@Test
 	public void testGetStandardQuestions() {
@@ -380,23 +384,23 @@ public class BookQuestionsTest {
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.question.BookQuestions#getElementaryQuestions()}.
+	 * Test to determine if the getStandardQuestions() method returns all the elementary questions
 	 */
 	@Test
 	public void testGetElementaryQuestions() {
 		List<Question> elemQuests = questions.getElementaryQuestions();
 		assertEquals("Here is a hint. The correct answer is d.", 
-				(((ElementaryQuestion) elemQuests.get(0)).getHint()));
+				((ElementaryQuestion) elemQuests.get(0)).getHint());
 		assertEquals(ELEM_SIZE, elemQuests.size());
 	}
 
 	/**
-	 * Test method for {@link edu.ncsu.csc216.book_quiz.question.BookQuestions#getAdvancedQuestions()}.
+	 * Test to determine if the getStandardQuestions() method returns all the advanced questions
 	 */
 	@Test
 	public void testGetAdvancedQuestions() {
 		List<Question> advQuests = questions.getAdvancedQuestions();
-		assertEquals("Great work!", (((AdvancedQuestion) advQuests.get(0)).getComment()));
+		assertEquals("Great work!", ((AdvancedQuestion) advQuests.get(0)).getComment());
 		assertEquals(ADV_SIZE, advQuests.size());
 	}
 

@@ -14,7 +14,6 @@ import edu.ncsu.csc216.question_library.StandardQuestion;
 
 /**
  * Implements a Finite State Machine for question sequencing, additions, and transitions.
- * [SEE UC4 AND UC7]
  * @author AlexiaMoore
  *
  */
@@ -32,7 +31,7 @@ public class BookQuestions {
 	/** A String constant to represent what is displayed when an answer is incorrect */
 	public static final String INCORRECT = "Incorrect!";
 	
-	/** */
+	/** Used for spacing */
 	public static final String SEPARATOR = " ";
 	
 	/** Represents the elementary question state */
@@ -48,15 +47,15 @@ public class BookQuestions {
 	private QuestionState state;
 	
 	/**
-	 * 
+	 * Handles the advanced state of questions
 	 * @author AlexiaMoore
 	 *
 	 */
-	public class AdvancedQuestionState extends QuestionState{
+	public class AdvancedQuestionState extends QuestionState {
 		
 		/**
-		 * 
-		 * @param questions
+		 * Sets the current state and constructs an ArrayList of the advanced questions
+		 * @param advQuestions the list of advanced questions
 		 */
 		public AdvancedQuestionState(List<AdvancedQuestion> advQuestions){
 			super(new ArrayList<Question>(advQuestions));
@@ -64,10 +63,10 @@ public class BookQuestions {
 		}
 		
 		/**
-		 * 
-		 * @param answer
-		 * @return
-		 * @throws EmptyQuestionListException 
+		 * Handles the response given from processing an answer while in the advanced state
+		 * @param answer the answer to process
+		 * @return correct with a comment or incorrect depending on the answer given
+		 * @throws EmptyQuestionListException if there are no more questions to process
 		 */
 		public String processAnswer(String answer) throws EmptyQuestionListException{
 			if (advState.getCurrentQuestionAnswer().equals(answer)){
@@ -87,21 +86,21 @@ public class BookQuestions {
 	}
 	
 	/**
-	 * 
+	 * Handles the elementary state of questions.
 	 * @author AlexiaMoore
 	 *
 	 */
-	public class ElementaryQuestionState extends QuestionState{
+	public class ElementaryQuestionState extends QuestionState {
 		
-		/** */
+		/** Keeps track of the number of attempts for a specific question */
 		private int attempts;
 		
-		/** */
+		/** Keeps track of the number of correct answers in a row on the first try */
 		private int numCorrectInRow;
 		
 		/**
-		 * 
-		 * @param questions
+		 * Sets the current state to the elementary state and creates an ArrayList of the questions
+		 * @param elemQuestions the list of elementary questions
 		 */
 		public ElementaryQuestionState(List<ElementaryQuestion> elemQuestions){
 			super(new ArrayList<Question>(elemQuestions));
@@ -111,10 +110,11 @@ public class BookQuestions {
 		}
 		
 		/**
-		 * 
-		 * @param answer
-		 * @return
-		 * @throws EmptyQuestionListException 
+		 * Handles the response given from processing an answer while in the elementary state.
+		 * Transitions to the standard state if two questions are answered correctly in a row
+		 * @param answer the answer to process
+		 * @return correct or incorrect and a hint on the first try
+		 * @throws EmptyQuestionListException if there are no more questions to process
 		 */
 		public String processAnswer(String answer) throws EmptyQuestionListException{
 			if (elemState.getCurrentQuestionAnswer().equals(answer)){
@@ -157,18 +157,18 @@ public class BookQuestions {
 	}
 	
 	/**
-	 * 
+	 * Handles the standard state of questions
 	 * @author AlexiaMoore
 	 *
 	 */
-	public class StandardQuestionState extends QuestionState{
+	public class StandardQuestionState extends QuestionState {
 		
-		/** */
+		/** Keeps track of the number of questions answered correctly in a row */
 		private int numCorrectInRow;
 		
 		/**
-		 * 
-		 * @param questions
+		 * Sets the current state to standard and creates an ArrayList of standard questions
+		 * @param stdQuestions the list of standard questions
 		 */
 		public StandardQuestionState(List<StandardQuestion> stdQuestions){
 			super(new ArrayList<Question>(stdQuestions));
@@ -177,10 +177,12 @@ public class BookQuestions {
 		}
 		
 		/**
-		 * 
-		 * @param answer
-		 * @return
-		 * @throws EmptyQuestionListException 
+		 * Handles the response given from answering a question while in the standard state.
+		 * Transitions to the advanced state if two questions are answered correctly in a row,
+		 * and to the elementary state if one question is answered incorrectly.
+		 * @param answer the answer to process
+		 * @return correct or incorrect
+		 * @throws EmptyQuestionListException if there are no more questions to process 
 		 */
 		public String processAnswer(String answer) throws EmptyQuestionListException{
 			if (state.getCurrentQuestionAnswer().equals(answer)){
@@ -211,10 +213,10 @@ public class BookQuestions {
 	
 	
 	/**
-	 * 
-	 * @param standard
-	 * @param elem
-	 * @param advanced
+	 * Constructs the BookQuestions object with three lists and sets the internal states
+	 * @param standard the list of standard questions
+	 * @param elem the list of elementary questions
+	 * @param advanced the list of advanced questions
 	 */
 	public BookQuestions(List<StandardQuestion> standard, List<ElementaryQuestion> elem,
 			List<AdvancedQuestion> advanced){

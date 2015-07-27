@@ -60,11 +60,10 @@ public abstract class QuestionState {
 	 * Abstract method to process the user's answer. Throws an EmptyQuestionListException if
 	 * currentQuestion is null. This method corresponds to transitions in the FSM. Each 
 	 * concrete state (nested classes inside BookQuestions) defines this method according to
-	 * the transitions that go from that state. What should happen in each concrete state is
-	 * defined in UC7, S1.
+	 * the transitions that go from that state.
 	 * @param answer the answer to be processed
 	 * @return the String that is appropriate for a response to the given answer
-	 * @throws EmptyQuestionListException 
+	 * @throws EmptyQuestionListException if there are no more questions to process in the state
 	 */
 	public abstract String processAnswer(String answer) throws EmptyQuestionListException;
 	
@@ -86,7 +85,7 @@ public abstract class QuestionState {
 	/**
 	 * Returns the question text of the current question
 	 * @return the current question text
-	 * @throws EmptyQuestionListException
+	 * @throws EmptyQuestionListException if there are no more questions
 	 */
 	public String getCurrentQuestionText() throws EmptyQuestionListException{
 		if (currentQuestion == null){
