@@ -44,6 +44,7 @@ public class BookQuiz implements QuizMaster {
 			throw new QuestionException("Invalid File.");
 		}
 		
+		
 		//Creates lists from the question reader of each question type
 		List<StandardQuestion> stds = reader.getStandardQuestions();
 		List<ElementaryQuestion> elems = reader.getElementaryQuestions();
